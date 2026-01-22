@@ -1,0 +1,173 @@
+import { Star, ShieldCheck, Truck, MessageCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+
+const products = [
+  {
+    id: 1,
+    name: "Premium Kenyan Coffee Beans - Arabica AA",
+    price: "KES 450",
+    unit: "/kg",
+    minOrder: "100 kg",
+    supplier: "Highland Coffee Co.",
+    verified: true,
+    rating: 4.8,
+    reviews: 156,
+    image: "https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=400&h=300&fit=crop",
+    badge: "Best Seller",
+  },
+  {
+    id: 2,
+    name: "Fresh Hass Avocados - Export Grade",
+    price: "KES 85",
+    unit: "/piece",
+    minOrder: "500 pieces",
+    supplier: "Kenya Fresh Farms",
+    verified: true,
+    rating: 4.9,
+    reviews: 243,
+    image: "https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?w=400&h=300&fit=crop",
+    badge: "Top Rated",
+  },
+  {
+    id: 3,
+    name: "African Print Fabric - Ankara Wax",
+    price: "KES 1,200",
+    unit: "/yard",
+    minOrder: "50 yards",
+    supplier: "Nairobi Textiles Ltd",
+    verified: true,
+    rating: 4.7,
+    reviews: 89,
+    image: "https://images.unsplash.com/photo-1590735213920-68192a487bc2?w=400&h=300&fit=crop",
+    badge: null,
+  },
+  {
+    id: 4,
+    name: "Solar Panel 400W Monocrystalline",
+    price: "KES 35,000",
+    unit: "/unit",
+    minOrder: "10 units",
+    supplier: "SunPower Africa",
+    verified: true,
+    rating: 4.6,
+    reviews: 67,
+    image: "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=400&h=300&fit=crop",
+    badge: "New",
+  },
+  {
+    id: 5,
+    name: "Macadamia Nuts - Premium Grade",
+    price: "KES 2,800",
+    unit: "/kg",
+    minOrder: "25 kg",
+    supplier: "Nyeri Nut Farms",
+    verified: true,
+    rating: 4.8,
+    reviews: 112,
+    image: "https://images.unsplash.com/photo-1606050627792-8e4c42f2a9c7?w=400&h=300&fit=crop",
+    badge: null,
+  },
+  {
+    id: 6,
+    name: "Sisal Fiber - Industrial Grade",
+    price: "KES 180",
+    unit: "/kg",
+    minOrder: "1000 kg",
+    supplier: "Coast Sisal Mills",
+    verified: false,
+    rating: 4.5,
+    reviews: 45,
+    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop",
+    badge: null,
+  },
+];
+
+export const FeaturedProducts = () => {
+  return (
+    <section className="py-16">
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between mb-12">
+          <div>
+            <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-2">
+              Featured Products
+            </h2>
+            <p className="text-muted-foreground">
+              Top-rated products from verified African suppliers
+            </p>
+          </div>
+          <Button variant="outline" className="hidden md:flex">
+            View All Products
+          </Button>
+        </div>
+
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {products.map((product, index) => (
+            <div
+              key={product.id}
+              className="group bg-card rounded-xl overflow-hidden card-shadow hover:card-shadow-hover transition-all duration-300 hover:-translate-y-1 animate-fade-in"
+              style={{ animationDelay: `${index * 0.1}s` }}
+            >
+              {/* Image */}
+              <div className="relative h-48 overflow-hidden">
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                {product.badge && (
+                  <Badge className="absolute top-3 left-3 bg-primary text-primary-foreground">
+                    {product.badge}
+                  </Badge>
+                )}
+                {product.verified && (
+                  <div className="absolute top-3 right-3 bg-secondary text-secondary-foreground px-2 py-1 rounded-md text-xs font-medium flex items-center gap-1">
+                    <ShieldCheck className="w-3 h-3" />
+                    Verified
+                  </div>
+                )}
+              </div>
+
+              {/* Content */}
+              <div className="p-5">
+                <h3 className="font-semibold text-foreground mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+                  {product.name}
+                </h3>
+
+                <div className="flex items-baseline gap-1 mb-3">
+                  <span className="text-2xl font-bold text-primary">{product.price}</span>
+                  <span className="text-muted-foreground text-sm">{product.unit}</span>
+                </div>
+
+                <div className="flex items-center gap-4 text-sm text-muted-foreground mb-3">
+                  <span>Min: {product.minOrder}</span>
+                  <span className="flex items-center gap-1">
+                    <Truck className="w-3 h-3" /> Ships from Kenya
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between pt-3 border-t border-border">
+                  <div>
+                    <p className="text-sm font-medium text-foreground">{product.supplier}</p>
+                    <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                      <Star className="w-3 h-3 fill-accent text-accent" />
+                      <span>{product.rating}</span>
+                      <span>({product.reviews} reviews)</span>
+                    </div>
+                  </div>
+                  <Button size="sm" variant="outline">
+                    <MessageCircle className="w-4 h-4" />
+                  </Button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="text-center mt-8 md:hidden">
+          <Button variant="outline">View All Products</Button>
+        </div>
+      </div>
+    </section>
+  );
+};
