@@ -1,4 +1,5 @@
 import { Search, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
@@ -74,12 +75,16 @@ export const HeroSection = () => {
 
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10 animate-fade-in" style={{ animationDelay: "0.5s" }}>
+            <Link to="/sell">
             <Button variant="cta" size="xl">
               Start Selling <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
-            <Button variant="outlinePrimary" size="xl">
-              Request Quotes
-            </Button>
+            </Link>
+            <Link to="/products">
+              <Button variant="outlinePrimary" size="xl">
+                Request Quotes
+              </Button>
+            </Link>
           </div>
 
           {/* Stats */}

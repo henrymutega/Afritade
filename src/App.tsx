@@ -9,7 +9,7 @@ import Register from "./pages/Register";
 import SignIn from "./pages/SignIn";
 import Sell from "./pages/Sell";
 import Suppliers from "./pages/Suppliers";
-import Categories from "./pages/Categories";
+import Products from "./pages/Products";
 
 
 const App = () => (
@@ -23,8 +23,8 @@ const App = () => (
       <Route path="/sell" element={<Sell />} />
       <Route path="/suppliers/:id" element={<Suppliers />} />
       <Route path="/suppliers" element={<Suppliers />} />
-      <Route path="/products" element={<Categories />} />
-      <Route path="/products/:id" element={<Categories />} />
+      <Route path="/products" element={<Products />} />
+      <Route path="/products/:id" element={<Products />} />
       <Route path="/about" element={<About />} />
       <Route path="/coming-soon" element={<ComingSoon />} />
       <Route path="*" element={<NotFound />} />

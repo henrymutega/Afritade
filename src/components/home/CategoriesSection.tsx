@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { 
   Cpu, 
   Wheat, 
@@ -14,18 +15,18 @@ import {
 } from "lucide-react";
 
 const categories = [
-  { name: "Electronics", icon: Cpu, count: "25,000+" },
-  { name: "Agriculture", icon: Wheat, count: "18,500+" },
-  { name: "Machinery", icon: Factory, count: "12,000+" },
-  { name: "Textiles & Apparel", icon: Shirt, count: "30,000+" },
-  { name: "Minerals & Metals", icon: Gem, count: "8,500+" },
-  { name: "Food & Beverages", icon: Coffee, count: "22,000+" },
-  { name: "Construction", icon: HardHat, count: "15,000+" },
-  { name: "Auto Parts", icon: Car, count: "9,800+" },
-  { name: "Energy & Power", icon: Zap, count: "5,200+" },
-  { name: "Health & Medical", icon: Stethoscope, count: "7,500+" },
-  { name: "Packaging", icon: Package, count: "11,000+" },
-  { name: "Arts & Crafts", icon: Palette, count: "14,000+" },
+  { name: "Electronics", icon: Cpu, count: "25,000+", slug: "electronics" },
+  { name: "Agriculture", icon: Wheat, count: "18,500+", slug: "agriculture" },
+  { name: "Machinery", icon: Factory, count: "12,000+", slug: "machinery" },
+  { name: "Textiles & Apparel", icon: Shirt, count: "30,000+", slug: "textiles-apparel" },
+  { name: "Minerals & Metals", icon: Gem, count: "8,500+", slug: "minerals-metals" },
+  { name: "Food & Beverages", icon: Coffee, count: "22,000+", slug: "food-beverages" },
+  { name: "Construction", icon: HardHat, count: "15,000+", slug: "construction" },
+  { name: "Auto Parts", icon: Car, count: "9,800+", slug: "auto-parts" },
+  { name: "Energy & Power", icon: Zap, count: "5,200+", slug: "energy-power" },
+  { name: "Health & Medical", icon: Stethoscope, count: "7,500+", slug: "health-medical" },
+  { name: "Packaging", icon: Package, count: "11,000+", slug: "packaging" },
+  { name: "Arts & Crafts", icon: Palette, count: "14,000+", slug: "arts-crafts" },
 ];
 
 export const CategoriesSection = () => {
@@ -43,9 +44,9 @@ export const CategoriesSection = () => {
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
           {categories.map((category, index) => (
-            <a
+            <Link
               key={category.name}
-              href="#"
+              to={`/products?category=${category.slug}`}
               className="group bg-card rounded-xl p-6 text-center card-shadow hover:card-shadow-hover transition-all duration-300 hover:-translate-y-1 animate-fade-in"
               style={{ animationDelay: `${index * 0.05}s` }}
             >
@@ -56,7 +57,7 @@ export const CategoriesSection = () => {
                 {category.name}
               </h3>
               <p className="text-xs text-muted-foreground">{category.count} products</p>
-            </a>
+            </Link>
           ))}
         </div>
       </div>

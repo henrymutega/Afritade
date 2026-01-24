@@ -1,4 +1,5 @@
 import { ShieldCheck, Star, MapPin, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
@@ -66,9 +67,11 @@ export const SuppliersSection = () => {
               Connect with verified manufacturers and suppliers across China
             </p>
           </div>
-          <Button variant="outline" className="hidden md:flex">
-            Browse All Suppliers
-          </Button>
+          <Link to="/suppliers">
+            <Button variant="outline" className="hidden md:flex">
+              Browse All Suppliers
+            </Button>
+          </Link>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -132,7 +135,9 @@ export const SuppliersSection = () => {
         </div>
 
         <div className="text-center mt-8 md:hidden">
-          <Button variant="outline">Browse All Suppliers</Button>
+          <Link to="/suppliers">
+            <Button variant="outline">Browse All Suppliers</Button>
+          </Link>
         </div>
       </div>
     </section>

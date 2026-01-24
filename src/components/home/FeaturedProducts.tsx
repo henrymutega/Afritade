@@ -1,4 +1,5 @@
 import { Star, ShieldCheck, Truck, MessageCircle } from "lucide-react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
@@ -96,9 +97,11 @@ export const FeaturedProducts = () => {
               Top-rated products from verified China suppliers
             </p>
           </div>
-          <Button variant="outline" className="hidden md:flex">
-            View All Products
-          </Button>
+          <Link to="/products">
+            <Button variant="outline" className="hidden md:flex">
+              View All Products
+            </Button>
+          </Link>
         </div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -165,7 +168,9 @@ export const FeaturedProducts = () => {
         </div>
 
         <div className="text-center mt-8 md:hidden">
-          <Button variant="outline">View All Products</Button>
+          <Link to="/products">
+            <Button variant="outline">View All Products</Button>
+          </Link>
         </div>
       </div>
     </section>
