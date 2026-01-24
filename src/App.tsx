@@ -11,6 +11,7 @@ import Sell from "./pages/Sell";
 import Suppliers from "./pages/Suppliers";
 import Categories from "./pages/Categories";
 
+
 const App = () => (
   <BrowserRouter>
     <ScrollToTop />

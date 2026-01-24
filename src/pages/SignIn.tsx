@@ -1,11 +1,38 @@
+import { supabase } from "@/lib/supabase";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Link } from "react-router-dom";
 
 const SignIn = () => {
+
+const navigate = useNavigate();
+const [loading, setLoading] = useState(false);
+
+
+const handleLogin = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setLoading(true);
+
+  const email = (document.getElementById("email") as HTMLInputElement).value;
+  const password = (document.getElementById("password") as HTMLInputElement).value;
+
+  const { error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  navigate("/");
+};
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -21,7 +48,7 @@ const SignIn = () => {
               </p>
             </div>
 
-            <form className="space-y-4">
+            <form className="space-y-4" onSubmit={handleLogin}>
               <div className="space-y-2">
                 <Label htmlFor="email">Email Address</Label>
                 <Input
@@ -50,8 +77,8 @@ const SignIn = () => {
                 </Link>
               </div>
 
-              <Button type="submit" className="w-full" size="lg">
-                Sign In
+              <Button type="submit" className="w-full" size="lg" disabled={loading}>
+                  { loading ? "Signing In..." : "Sign In"}
               </Button>
             </form>
 

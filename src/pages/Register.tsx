@@ -1,3 +1,6 @@
+import { useState } from "react";
+import { supabase } from "@/lib/supabase";
+import { Link, useNavigate } from "react-router-dom";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
@@ -10,9 +13,68 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Link } from "react-router-dom";
 
 const Register = () => {
+
+const navigate = useNavigate();
+const [loading, setLoading] = useState(false);
+
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const passwordRegex =
+  /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+
+const handleRegister = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setLoading(true);
+
+  const email = (document.getElementById("email") as HTMLInputElement).value;
+  const password = (document.getElementById("password") as HTMLInputElement).value;
+  const confirmPassword = (document.getElementById("confirmPassword") as HTMLInputElement).value;
+  const company = (document.getElementById("company") as HTMLInputElement).value;
+  const role = document.querySelector("[data-value]")?.getAttribute("data-value");
+
+  if (!emailRegex.test(email)) {
+    alert("Please enter a valid email address.");
+    setLoading(false);
+    return;
+  }
+
+  if (!passwordRegex.test(password)) {
+    alert("Password must be at least 8 characters long and include at least one letter, one number, and one special character.");
+    setLoading(false);
+    return;
+  } 
+
+  if (password !== confirmPassword) {
+    alert("Passwords do not match.");
+    setLoading(false);
+    return;
+  }
+
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+  });
+
+  if (error) {
+    alert(error.message);
+    setLoading(false);
+    return;
+  }
+
+  // insert profile
+  await supabase.from("profiles").insert({
+    id: data.user?.id,
+    email,
+    role,
+    company_name: company,
+  });
+
+  alert("Account created successfully!");
+  navigate("/signin");
+};
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -28,7 +90,7 @@ const Register = () => {
               </p>
             </div>
 
-            <form className="space-y-4">
+            <form className="space-y-4" onSubmit={handleRegister}>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="firstName">First Name</Label>
@@ -75,6 +137,7 @@ const Register = () => {
                   type="password"
                   placeholder="••••••••"
                 />
+                <p className="text-xs text-muted-foreground">Password must be at least 8 characters long and include at least one letter, one number, and one special character.</p>
               </div>
 
               <div className="space-y-2">
@@ -97,8 +160,8 @@ const Register = () => {
                 </Link>
               </div>
 
-              <Button type="submit" className="w-full" size="lg">
-                Create Account
+              <Button type="submit" className="w-full" size="lg" disabled={loading}>
+                {loading ? "Creating Account..." : "Create Account"}
               </Button>
             </form>
 
