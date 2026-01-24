@@ -15,8 +15,6 @@ const categories = [
   { name: "Machinery", href: "/products?category=machinery" },
   { name: "Agriculture", href: "/products?category=agriculture" },
   { name: "Textiles", href: "/products?category=textiles" },
-  { name: "Minerals", href: "/products?category=minerals" },
-  { name: "Food & Beverages", href: "/products?category=food" },
   { name: "Construction", href: "/products?category=construction" },
   { name: "Auto Parts", href: "/products?category=auto" },
 ];
@@ -50,11 +48,11 @@ export const Header = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 shrink-0">
             <div className="w-10 h-10 hero-gradient rounded-lg flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-xl">A</span>
+              <span className="text-primary-foreground font-bold text-xl">D</span>
             </div>
             <div className="hidden sm:block">
-              <h1 className="font-display font-bold text-xl text-foreground">AfriTrade</h1>
-              <p className="text-xs text-muted-foreground">Africa's B2B Marketplace</p>
+              <h1 className="font-display font-bold text-xl text-foreground">Tre.David </h1>
+              <p className="text-xs text-muted-foreground">B2B Marketplace</p>
             </div>
           </Link>
 

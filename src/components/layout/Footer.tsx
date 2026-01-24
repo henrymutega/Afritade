@@ -3,18 +3,18 @@ import { Link } from "react-router-dom";
 
 const footerLinks = {
   "Get to Know Us": [
-    { name: "About AfriTrade", href: "/about" },
+    { name: "About Tre.David", href: "/about" },
     { name: "Careers", href: "/about" },
     { name: "Press Releases", href: "/about" },
-    { name: "AfriTrade Cares", href: "/about" },
+    { name: "Tre.David Cares", href: "/about" },
   ],
-  "Sell on AfriTrade": [
+  "Sell on Tre.David": [
     { name: "Start Selling", href: "/sell" },
     { name: "Seller Central", href: "/sell" },
     { name: "Supplier Membership", href: "/sell" },
     { name: "Advertise Products", href: "/sell" },
   ],
-  "Buy on AfriTrade": [
+  "Buy on Tre.David": [
     { name: "How to Buy", href: "/help" },
     { name: "Trade Assurance", href: "/help" },
     { name: "Payment Methods", href: "/help" },
@@ -38,15 +38,15 @@ export const Footer = () => {
           <div className="col-span-2 md:col-span-4 lg:col-span-1">
             <Link to="/" className="flex items-center gap-2 mb-4">
               <div className="w-10 h-10 hero-gradient rounded-lg flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-xl">A</span>
+                <span className="text-primary-foreground font-bold text-xl">D</span>
               </div>
               <div>
-                <h2 className="font-display font-bold text-xl">AfriTrade</h2>
-                <p className="text-xs text-muted-foreground">Africa's B2B Marketplace</p>
+                <h2 className="font-display font-bold text-xl">Tre.David</h2>
+                <p className="text-xs text-muted-foreground">B2B Marketplace</p>
               </div>
             </Link>
             <p className="text-sm text-muted-foreground mb-4">
-              Connecting African manufacturers, suppliers, and buyers worldwide.
+              Connecting manufacturers, suppliers and buyers worldwide.
             </p>
             <div className="flex gap-3">
               <a href="#" className="w-8 h-8 rounded-full bg-muted/20 flex items-center justify-center hover:bg-primary transition-colors">
@@ -86,7 +86,7 @@ export const Footer = () => {
           <div className="flex flex-wrap gap-6 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
               <Mail className="w-4 h-4 text-primary" />
-              <span>hello@afritrade.com</span>
+              <span>hello@tredavid.com</span>
             </div>
             <div className="flex items-center gap-2">
               <Phone className="w-4 h-4 text-primary" />
@@ -104,7 +104,7 @@ export const Footer = () => {
       <div className="border-t border-muted/20">
         <div className="container mx-auto px-4 py-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-            <p>© 2026 AfriTrade. All rights reserved.</p>
+            <p>© 2026 Tre.David. All rights reserved.</p>
             <div className="flex gap-4">
               <Link to="/help" className="hover:text-primary transition-colors">Privacy Policy</Link>
               <Link to="/help" className="hover:text-primary transition-colors">Terms of Use</Link>
