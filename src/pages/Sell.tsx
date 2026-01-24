@@ -3,8 +3,8 @@ import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { 
-  Globe, TrendingUp, Shield, Users, CheckCircle, ArrowRight,
-  Store, BarChart3, Headphones 
+  Globe, TrendingUp, Shield, CheckCircle, ArrowRight,
+    Headphones 
 } from "lucide-react";
 
 const benefits = [

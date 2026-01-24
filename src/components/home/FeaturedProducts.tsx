@@ -13,7 +13,7 @@ const products = [
     verified: true,
     rating: 4.8,
     reviews: 156,
-    image: "https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=400&h=300&fit=crop",
+    image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=300&h=200&fit=crop",
     badge: "Best Seller",
   },
   {
@@ -26,7 +26,7 @@ const products = [
     verified: true,
     rating: 4.9,
     reviews: 243,
-    image: "https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?w=400&h=300&fit=crop",
+    image: "https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=300&h=200&fit=crop",
     badge: "Top Rated",
   },
   {
@@ -39,7 +39,7 @@ const products = [
     verified: true,
     rating: 4.7,
     reviews: 89,
-    image: "https://images.unsplash.com/photo-1590735213920-68192a487bc2?w=400&h=300&fit=crop",
+    image: "https://images.unsplash.com/photo-1558171813-4c088753af8f?w=300&h=200&fit=crop",
     badge: null,
   },
   {
