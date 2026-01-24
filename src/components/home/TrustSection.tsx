@@ -32,7 +32,7 @@ export const TrustSection = () => {
             Trade with Confidence
           </h2>
           <p className="opacity-90 max-w-2xl mx-auto">
-            AfriTrade protects your business with verified suppliers, secure payments, and guaranteed delivery
+            Tre.David protects your business with verified suppliers, secure payments, and guaranteed delivery
           </p>
         </div>
 

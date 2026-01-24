@@ -5,10 +5,10 @@ import { Badge } from "@/components/ui/badge";
 const suppliers = [
   {
     id: 1,
-    name: "Kenya Fresh Farms Ltd",
+    name: "China Agri Equipment Co.",
     type: "Manufacturer",
-    location: "Nairobi, Kenya",
-    products: ["Avocados", "Mangoes", "Passion Fruit"],
+    location: "Shandong, China",
+    products: ["Mowers", "Tractors", "Harvesters"],
     rating: 4.9,
     years: 8,
     verified: true,
@@ -17,9 +17,9 @@ const suppliers = [
   },
   {
     id: 2,
-    name: "SunPower Africa",
+    name: "SunPower Co Ltd",
     type: "Manufacturer",
-    location: "Mombasa, Kenya",
+    location: "HangZhou, China",
     products: ["Solar Panels", "Inverters", "Batteries"],
     rating: 4.8,
     years: 5,
@@ -29,10 +29,10 @@ const suppliers = [
   },
   {
     id: 3,
-    name: "Nairobi Textiles Ltd",
+    name: "Weihai Textiles Inc.",
     type: "Supplier",
-    location: "Nairobi, Kenya",
-    products: ["African Prints", "Cotton Fabric", "Kitenge"],
+    location: "Weihai, China",
+    products: ["Ankara Prints", "Cotton Fabric", "Kitenge"],
     rating: 4.7,
     years: 12,
     verified: true,
@@ -41,10 +41,10 @@ const suppliers = [
   },
   {
     id: 4,
-    name: "Highland Coffee Co.",
+    name: "Xiaomi Electronics Co.",
     type: "Manufacturer",
-    location: "Nyeri, Kenya",
-    products: ["Coffee Beans", "Ground Coffee", "Instant Coffee"],
+    location: "Shenzhen, China",
+    products: ["Mobile Phones", "Laptops", "Smart Devices"],
     rating: 4.9,
     years: 15,
     verified: true,
@@ -63,7 +63,7 @@ export const SuppliersSection = () => {
               Top Suppliers
             </h2>
             <p className="text-muted-foreground">
-              Connect with verified manufacturers and suppliers across Africa
+              Connect with verified manufacturers and suppliers across China
             </p>
           </div>
           <Button variant="outline" className="hidden md:flex">

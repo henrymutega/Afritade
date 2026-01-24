@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 
 const benefits = [
   "Free to join - no setup fees",
-  "Reach buyers across 54 African countries",
+  "Reach buyers across African countries",
   "Trade Assurance on every transaction",
   "Dedicated account manager",
 ];
@@ -25,7 +25,7 @@ export const CTASection = () => {
                 Ready to Grow Your Business in Africa?
               </h2>
               <p className="text-muted-foreground mb-8">
-                Join thousands of businesses already trading on AfriTrade. Start selling your products to buyers across the continent today.
+                Join thousands of businesses already trading on Tre.David. Start selling your products to buyers across the continent today.
               </p>
               <ul className="space-y-3">
                 {benefits.map((benefit) => (
@@ -60,7 +60,7 @@ export const CTASection = () => {
                 <div>
                   <Input 
                     type="tel" 
-                    placeholder="Phone Number (+254...)" 
+                    placeholder="Phone Number (+...)" 
                     className="h-12"
                   />
                 </div>

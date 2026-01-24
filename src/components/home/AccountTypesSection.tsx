@@ -5,7 +5,7 @@ const accountTypes = [
   {
     icon: ShoppingBag,
     title: "Buyer Account",
-    description: "Source products from verified African suppliers. Get competitive prices and trade protection.",
+    description: "Source products from verified China suppliers. Get competitive prices and trade protection.",
     features: [
       "Access to 200,000+ products",
       "Request quotes from suppliers",
@@ -18,10 +18,10 @@ const accountTypes = [
   {
     icon: Factory,
     title: "Manufacturer Account",
-    description: "Showcase your products to global buyers. Grow your manufacturing business with AfriTrade.",
+    description: "Showcase your products to global buyers. Grow your manufacturing business with Tre.David.",
     features: [
       "List unlimited products",
-      "Reach buyers in 54 countries",
+      "Reach buyers in 7 countries",
       "Get verified manufacturer badge",
       "Instant quote requests",
     ],
@@ -52,7 +52,7 @@ export const AccountTypesSection = () => {
             Choose Your Account Type
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Whether you're buying, manufacturing, or supplying, AfriTrade has the right tools for your business
+            Whether you're buying, manufacturing or supplying, Tre.David has the right tools for your business
           </p>
         </div>
 

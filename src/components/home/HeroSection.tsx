@@ -4,10 +4,10 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 
 const popularSearches = [
-  "Avocados",
-  "Coffee Beans",
-  "Textiles",
-  "Solar Panels",
+  "Phones",
+  "Electronics",
+  "Computers",
+  "Auto Parts",
   "Machinery",
   "Building Materials",
 ];
@@ -26,19 +26,19 @@ export const HeroSection = () => {
           {/* Badge */}
           <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6 animate-fade-in">
             <span className="w-2 h-2 bg-primary rounded-full animate-pulse" />
-            Africa's #1 B2B Marketplace
+            China's #1 B2B Marketplace
           </div>
 
           {/* Headline */}
           <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 animate-fade-in" style={{ animationDelay: "0.1s" }}>
             Source Products from{" "}
-            <span className="text-gradient-primary">African</span>{" "}
-            Manufacturers
+            <span className="text-gradient-primary">China</span>{" "}
+            Suppliers
           </h1>
 
           {/* Subheadline */}
           <p className="text-lg md:text-xl text-muted-foreground mb-8 animate-fade-in" style={{ animationDelay: "0.2s" }}>
-            Connect with verified suppliers, manufacturers, and buyers across Africa. 
+            Connect with verified suppliers and manufacturers across China. 
             Trade in KES with secure payments and logistics.
           </p>
 
@@ -93,8 +93,8 @@ export const HeroSection = () => {
               <p className="text-sm text-muted-foreground">Products Listed</p>
             </div>
             <div>
-              <p className="font-display text-3xl md:text-4xl font-bold text-accent">54</p>
-              <p className="text-sm text-muted-foreground">African Countries</p>
+              <p className="font-display text-3xl md:text-4xl font-bold text-accent">7</p>
+              <p className="text-sm text-muted-foreground">East African Countries</p>
             </div>
           </div>
         </div>

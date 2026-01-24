@@ -5,11 +5,11 @@ import { Badge } from "@/components/ui/badge";
 const products = [
   {
     id: 1,
-    name: "Premium Kenyan Coffee Beans - Arabica AA",
-    price: "KES 450",
-    unit: "/kg",
-    minOrder: "100 kg",
-    supplier: "Highland Coffee Co.",
+    name: "Computer Accessories - chips",
+    price: "KES 100",
+    unit: "/piece",
+    minOrder: "100 pieces",
+    supplier: "Shenzhen Tech Co.",
     verified: true,
     rating: 4.8,
     reviews: 156,
@@ -18,11 +18,11 @@ const products = [
   },
   {
     id: 2,
-    name: "Fresh Hass Avocados - Export Grade",
-    price: "KES 85",
+    name: "Vehicle Spare Parts - Brake Pads",
+    price: "KES 2500",
     unit: "/piece",
-    minOrder: "500 pieces",
-    supplier: "Kenya Fresh Farms",
+    minOrder: "5 pieces",
+    supplier: "Guangzhou Auto Parts Co.",
     verified: true,
     rating: 4.9,
     reviews: 243,
@@ -35,7 +35,7 @@ const products = [
     price: "KES 1,200",
     unit: "/yard",
     minOrder: "50 yards",
-    supplier: "Nairobi Textiles Ltd",
+    supplier: "Weihai Textiles Inc.",
     verified: true,
     rating: 4.7,
     reviews: 89,
@@ -48,7 +48,7 @@ const products = [
     price: "KES 35,000",
     unit: "/unit",
     minOrder: "10 units",
-    supplier: "SunPower Africa",
+    supplier: "SunPower Co Ltd",
     verified: true,
     rating: 4.6,
     reviews: 67,
@@ -57,11 +57,11 @@ const products = [
   },
   {
     id: 5,
-    name: "Macadamia Nuts - Premium Grade",
-    price: "KES 2,800",
-    unit: "/kg",
-    minOrder: "25 kg",
-    supplier: "Nyeri Nut Farms",
+    name: "Oppo A54 Smartphone - 128GB, 4GB RAM",
+    price: "KES 20,800",
+    unit: "/unit",
+    minOrder: "10 units",
+    supplier: "Oppo Mobile Co. Ltd",
     verified: true,
     rating: 4.8,
     reviews: 112,
@@ -70,11 +70,11 @@ const products = [
   },
   {
     id: 6,
-    name: "Sisal Fiber - Industrial Grade",
-    price: "KES 180",
-    unit: "/kg",
-    minOrder: "1000 kg",
-    supplier: "Coast Sisal Mills",
+    name: "Motorcycle Tires - 17 inch",
+    price: "KES 1,000",
+    unit: "/piece",
+    minOrder: "100 pieces",
+    supplier: "Wenzhou Tires Co.",
     verified: false,
     rating: 4.5,
     reviews: 45,
@@ -93,7 +93,7 @@ export const FeaturedProducts = () => {
               Featured Products
             </h2>
             <p className="text-muted-foreground">
-              Top-rated products from verified African suppliers
+              Top-rated products from verified China suppliers
             </p>
           </div>
           <Button variant="outline" className="hidden md:flex">
