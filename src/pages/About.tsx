@@ -13,7 +13,7 @@ const values = [
   {
     icon: Globe,
     title: "Pan-African Vision",
-    description: "We're committed to connecting businesses across all 54 African nations, fostering continental trade and economic growth.",
+    description: "We're committed to connecting businesses across all African nations, fostering continental trade and economic growth.",
   },
   {
     icon: Users,
@@ -41,10 +41,10 @@ const About = () => {
         <section className="hero-gradient text-primary-foreground py-20">
           <div className="container mx-auto px-4 text-center">
             <h1 className="font-display text-5xl font-bold mb-4">
-              About AfriTrade
+              About Tre.David
             </h1>
             <p className="text-xl opacity-90 max-w-2xl mx-auto">
-              Africa's leading B2B marketplace, connecting manufacturers, suppliers, and buyers across the continent.
+              The leading B2B marketplace, connecting manufacturers, suppliers and buyers across the continent.
             </p>
           </div>
         </section>
@@ -71,7 +71,7 @@ const About = () => {
                 Our Mission
               </h2>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                To revolutionize intra-African trade by creating a seamless, secure, and efficient digital marketplace that empowers businesses of all sizes. We believe that by connecting African manufacturers and suppliers with buyers worldwide, we can drive economic growth, create jobs, and showcase the incredible potential of African industry.
+                To revolutionize China-African trade by creating a seamless, secure, and efficient digital marketplace that empowers businesses of all sizes. We believe that by connecting China manufacturers and suppliers with buyers in Africa, we can drive economic growth, create jobs, and showcase the incredible potential of African industry.
               </p>
             </div>
           </div>
@@ -110,10 +110,10 @@ const About = () => {
               </h2>
               <div className="prose prose-lg mx-auto text-muted-foreground">
                 <p className="mb-4">
-                  AfriTrade was founded in 2026 with a simple yet ambitious goal: to make it easier for African businesses to trade with each other and the world. Our founders, experienced entrepreneurs from Africa, saw firsthand the challenges that manufacturers and suppliers faced in reaching new markets.
+                  Tre.David was founded in 2026 with a simple yet ambitious goal: to make it easier for African businesses to trade with each other and the world. Our founders, experienced entrepreneurs from Africa, saw firsthand the challenges that manufacturers and suppliers faced in reaching new markets.
                 </p>
                 <p className="mb-4">
-                  Today, AfriTrade has grown into Africa's largest B2B marketplace, serving businesses in all 7 African countries. From small artisans to large manufacturers, we provide the tools and connections needed to grow and thrive in the global economy.
+                  Today, Tre.David has grown into Africa's largest B2B marketplace, serving businesses in all 7 African countries. From small artisans to large manufacturers, we provide the tools and connections needed to grow and thrive in the global economy.
                 </p>
                 <p>
                   Our commitment to trust, transparency and African excellence drives everything we do. We're not just building a platform – we're building the future of African trade.
