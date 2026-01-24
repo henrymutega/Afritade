@@ -17,7 +17,7 @@ const SignIn = () => {
                 Welcome Back
               </h1>
               <p className="text-muted-foreground">
-                Sign in to your AfriTrade account
+                Sign in to your Tre.David account
               </p>
             </div>
 

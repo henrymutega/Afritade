@@ -95,7 +95,7 @@ const Sell = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-3xl">
               <h1 className="font-display text-5xl font-bold mb-4">
-                Sell on AfriTrade
+                Sell on Tre.David
               </h1>
               <p className="text-xl opacity-90 mb-8">
                 Join Africa's largest B2B marketplace and reach millions of buyers across the continent and beyond.
@@ -118,7 +118,7 @@ const Sell = () => {
         <section className="py-16">
           <div className="container mx-auto px-4">
             <h2 className="font-display text-3xl font-bold text-foreground text-center mb-12">
-              Why Sell on AfriTrade?
+              Why Sell on Tre.David?
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {benefits.map((benefit) => (

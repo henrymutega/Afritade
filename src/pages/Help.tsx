@@ -11,13 +11,13 @@ import {
 const helpCategories = [
   {
     icon: ShoppingCart,
-    title: "Buying on AfriTrade",
+    title: "Buying on Tre.David",
     description: "How to search, order, and manage your purchases",
     href: "/help/buying",
   },
   {
     icon: Users,
-    title: "Selling on AfriTrade",
+    title: "Selling on Tre.David",
     description: "Set up your store, list products, and manage orders",
     href: "/help/selling",
   },

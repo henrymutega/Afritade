@@ -27,7 +27,7 @@ const Categories = () => {
             Browse Categories
           </h1>
           <p className="text-muted-foreground text-lg">
-            Explore millions of products across Africa's top industries
+            Explore millions of products across China's top industries
           </p>
         </div>
 
