@@ -17,8 +17,8 @@ const index = () => {
             <CategoriesSection />
             <FeaturedProducts />
             <SuppliersSection />
-            <AccountTypesSection />
             <TrustSection />
+            <AccountTypesSection />
             <CTASection />
         </main>
         <Footer />

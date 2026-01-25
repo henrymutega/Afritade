@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const popularSearches = [
   "Phones",
@@ -15,6 +16,7 @@ const popularSearches = [
 
 export const HeroSection = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const { t } = useTranslation();
 
   return (
     <section className="relative overflow-hidden">
@@ -32,15 +34,13 @@ export const HeroSection = () => {
 
           {/* Headline */}
           <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 animate-fade-in" style={{ animationDelay: "0.1s" }}>
-            Source Products from{" "}
-            <span className="text-gradient-primary">China</span>{" "}
-            Suppliers
+            {t('hero.title')}{" "}
+            <span className="text-gradient-primary">{t('hero.titleHighlight')}</span>
           </h1>
 
           {/* Subheadline */}
           <p className="text-lg md:text-xl text-muted-foreground mb-8 animate-fade-in" style={{ animationDelay: "0.2s" }}>
-            Connect with verified suppliers and manufacturers across China. 
-            Trade in KES with secure payments and logistics.
+           {t('hero.subtitle')}
           </p>
 
           {/* Search bar */}
@@ -48,14 +48,14 @@ export const HeroSection = () => {
             <div className="flex bg-card rounded-lg p-2 card-shadow">
               <Input
                 type="text"
-                placeholder="What are you looking for?"
+                placeholder={t("header.searchPlaceholder")}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="flex-1 border-0 bg-transparent focus-visible:ring-0 text-base"
               />
               <Button variant="hero" size="lg">
                 <Search className="w-5 h-5 mr-2" />
-                Search
+                {t("common.search")}
               </Button>
             </div>
           </div>
@@ -77,12 +77,12 @@ export const HeroSection = () => {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10 animate-fade-in" style={{ animationDelay: "0.5s" }}>
             <Link to="/sell">
             <Button variant="cta" size="xl">
-              Start Selling <ArrowRight className="w-5 h-5 ml-2" />
+              {t("hero.startSelling")}<ArrowRight className="w-5 h-5 ml-2" />
             </Button>
             </Link>
             <Link to="/products">
               <Button variant="outlinePrimary" size="xl">
-                Request Quotes
+                {t("hero.requestQuotes")}
               </Button>
             </Link>
           </div>
@@ -91,15 +91,15 @@ export const HeroSection = () => {
           <div className="grid grid-cols-3 gap-8 mt-16 pt-8 border-t border-border animate-fade-in" style={{ animationDelay: "0.6s" }}>
             <div>
               <p className="font-display text-3xl md:text-4xl font-bold text-primary">50K+</p>
-              <p className="text-sm text-muted-foreground">Verified Suppliers</p>
+              <p className="text-sm text-muted-foreground">{t("hero.suppliers")}</p>
             </div>
             <div>
               <p className="font-display text-3xl md:text-4xl font-bold text-secondary">200K+</p>
-              <p className="text-sm text-muted-foreground">Products Listed</p>
+              <p className="text-sm text-muted-foreground">{t("hero.products")}</p>
             </div>
             <div>
               <p className="font-display text-3xl md:text-4xl font-bold text-accent">7</p>
-              <p className="text-sm text-muted-foreground">East African Countries</p>
+              <p className="text-sm text-muted-foreground">{t("hero.countries")}</p>
             </div>
           </div>
         </div>

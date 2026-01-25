@@ -2,6 +2,7 @@ import { Star, ShieldCheck, Truck, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useTranslation } from "react-i18next";
 
 const products = [
   {
@@ -85,29 +86,32 @@ const products = [
 ];
 
 export const FeaturedProducts = () => {
+  const { t } = useTranslation();
+
   return (
     <section className="py-16">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between mb-12">
           <div>
             <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-2">
-              Featured Products
+              {t('home.featuredProducts')}
             </h2>
             <p className="text-muted-foreground">
-              Top-rated products from verified China suppliers
+              {t('home.discoverProducts')}
             </p>
           </div>
           <Link to="/products">
             <Button variant="outline" className="hidden md:flex">
-              View All Products
+              {t('home.viewAllProducts')}
             </Button>
           </Link>
         </div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {products.map((product, index) => (
-            <div
+            <Link
               key={product.id}
+              to={`/product/${product.id}`}
               className="group bg-card rounded-xl overflow-hidden card-shadow hover:card-shadow-hover transition-all duration-300 hover:-translate-y-1 animate-fade-in"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
@@ -126,7 +130,7 @@ export const FeaturedProducts = () => {
                 {product.verified && (
                   <div className="absolute top-3 right-3 bg-secondary text-secondary-foreground px-2 py-1 rounded-md text-xs font-medium flex items-center gap-1">
                     <ShieldCheck className="w-3 h-3" />
-                    Verified
+                    {t('products.verified')}
                   </div>
                 )}
               </div>
@@ -143,7 +147,7 @@ export const FeaturedProducts = () => {
                 </div>
 
                 <div className="flex items-center gap-4 text-sm text-muted-foreground mb-3">
-                  <span>Min: {product.minOrder}</span>
+                  <span>{t('products.minOrder')}: {product.minOrder}</span>
                   <span className="flex items-center gap-1">
                     <Truck className="w-3 h-3" /> Ships from Kenya
                   </span>
@@ -155,7 +159,7 @@ export const FeaturedProducts = () => {
                     <div className="flex items-center gap-1 text-xs text-muted-foreground">
                       <Star className="w-3 h-3 fill-accent text-accent" />
                       <span>{product.rating}</span>
-                      <span>({product.reviews} reviews)</span>
+                      <span>({product.reviews} {t('products.reviews')})</span>
                     </div>
                   </div>
                   <Button size="sm" variant="outline">
@@ -163,13 +167,13 @@ export const FeaturedProducts = () => {
                   </Button>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 
         <div className="text-center mt-8 md:hidden">
           <Link to="/products">
-            <Button variant="outline">View All Products</Button>
+            <Button variant="outline">{t('home.viewAllProducts')}</Button>
           </Link>
         </div>
       </div>

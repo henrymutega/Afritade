@@ -1,4 +1,4 @@
-import { Search, ShoppingCart, User, Menu, ChevronDown, Globe } from "lucide-react";
+import { Search, ShoppingCart, User, Menu, ChevronDown, Globe, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -9,9 +9,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { SettingsDropdown } from "./SettingsDropdown";
+import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { SettingsDropdown } from "./SettingsDropdown";
 
 const categoryKeys = [
   { key: "electronics", href: "/products?category=electronics" },
@@ -23,9 +23,15 @@ const categoryKeys = [
   { key: "construction", href: "/products?category=construction" },
   { key: "autoParts", href: "/products?category=auto" },
 ];
+
 export const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
   const { t } = useTranslation();
+
+  const handleSignOut = async () => {
+    navigate("/");
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-card border-b border-border">
@@ -35,14 +41,14 @@ export const Header = () => {
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1">
               <Globe className="w-4 h-4" />
-              {t("header.shipTo")}:: {t("header.kenya")}
+              {t('header.shipTo')}: {t('header.kenya')}
             </span>
-            <span>{t("header.currency")}</span>
+            <span>{t('header.currency')}</span>
           </div>
           <div className="hidden md:flex items-center gap-4">
-            <Link to="/help" className="hover:text-primary transition-colors">{t("common.help")}</Link>
-            <Link to="/sell" className="hover:text-primary transition-colors">{t("header.becomeSupplier")}</Link>
-            <Link to="/about" className="hover:text-primary transition-colors">{t("common.about")}</Link>
+            <Link to="/help" className="hover:text-primary transition-colors">{t('common.help')}</Link>
+            <Link to="/sell" className="hover:text-primary transition-colors">{t('header.becomeSupplier')}</Link>
+            <Link to="/about" className="hover:text-primary transition-colors">{t('common.about')}</Link>
           </div>
         </div>
       </div>
@@ -56,12 +62,12 @@ export const Header = () => {
               <span className="text-primary-foreground font-bold text-xl">D</span>
             </div>
             <div className="hidden sm:block">
-              <h1 className="font-display font-bold text-xl text-foreground">Tre.David </h1>
-              <p className="text-xs text-muted-foreground">B2B Marketplace</p>
+              <h1 className="font-display font-bold text-xl text-foreground">Tre.David</h1>
+              <p className="text-xs text-muted-foreground">Africa's B2B Marketplace</p>
             </div>
           </Link>
 
-            {/* Search */}
+          {/* Search */}
           <div className="flex-1 max-w-2xl">
             <div className="flex">
               <DropdownMenu>
@@ -102,7 +108,7 @@ export const Header = () => {
                 0
               </span>
             </Button>
-
+            
             <SettingsDropdown />
             
             <DropdownMenu>
@@ -111,15 +117,34 @@ export const Header = () => {
                   <User className="w-5 h-5" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48">
-                <DropdownMenuItem asChild>
-                  <Link to="/signin">{t("common.signin")}</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/register">{t("common.register")}</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>{t("common.myOrders")}</DropdownMenuItem>
-                <DropdownMenuItem>{t("common.messages")}</DropdownMenuItem>
+              <DropdownMenuContent align="end" className="w-48 bg-popover">
+                (
+                  <>
+                    <DropdownMenuItem disabled className="text-muted-foreground">
+                    
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem asChild>
+                      <Link to="/dashboard">{t('common.dashboard')}</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>{t('common.myOrders')}</DropdownMenuItem>
+                    <DropdownMenuItem>{t('common.messages')}</DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={handleSignOut} className="text-destructive">
+                      <LogOut className="w-4 h-4 mr-2" />
+                      {t('common.signOut')}
+                    </DropdownMenuItem>
+                  </>
+                ) : (
+                  <>
+                    <DropdownMenuItem asChild>
+                      <Link to="/signin">{t('common.signIn')}</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link to="/register">{t('common.register')}</Link>
+                    </DropdownMenuItem>
+                  </>
+                )
               </DropdownMenuContent>
             </DropdownMenu>
 

@@ -2,6 +2,7 @@ import { ShieldCheck, Star, MapPin, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useTranslation } from "react-i18next";
 
 const suppliers = [
   {
@@ -55,21 +56,24 @@ const suppliers = [
 ];
 
 export const SuppliersSection = () => {
+  const { t } = useTranslation();
+
+ 
   return (
     <section className="py-16 bg-muted/30">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between mb-12">
           <div>
             <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-2">
-              Top Suppliers
+              {t('home.verifiedSuppliers')}
             </h2>
             <p className="text-muted-foreground">
-              Connect with verified manufacturers and suppliers across China
+              {t('home.suppliersSubtitle')}
             </p>
           </div>
           <Link to="/suppliers">
             <Button variant="outline" className="hidden md:flex">
-              Browse All Suppliers
+              {t('home.viewAllSuppliers')}
             </Button>
           </Link>
         </div>
@@ -127,16 +131,18 @@ export const SuppliersSection = () => {
                 </div>
               </div>
 
-              <Button variant="outline" className="w-full mt-4" size="sm">
-                View Profile <ArrowRight className="w-4 h-4 ml-1" />
-              </Button>
+              <Link to={`/supplier/${supplier.id}`} className="w-full">
+                <Button variant="outline" className="w-full mt-4" size="sm">
+                  {t('common.view')} <ArrowRight className="w-4 h-4 ml-1" />
+                </Button>
+              </Link>
             </div>
           ))}
         </div>
 
         <div className="text-center mt-8 md:hidden">
           <Link to="/suppliers">
-            <Button variant="outline">Browse All Suppliers</Button>
+            <Button variant="outline">{t('home.viewAllSuppliers')}</Button>
           </Link>
         </div>
       </div>
