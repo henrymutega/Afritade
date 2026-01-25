@@ -5,22 +5,27 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { SettingsDropdown } from "./SettingsDropdown";
+import { useTranslation } from "react-i18next";
 
-const categories = [
-  { name: "Electronics", href: "/products?category=electronics" },
-  { name: "Machinery", href: "/products?category=machinery" },
-  { name: "Agriculture", href: "/products?category=agriculture" },
-  { name: "Textiles", href: "/products?category=textiles" },
-  { name: "Construction", href: "/products?category=construction" },
-  { name: "Auto Parts", href: "/products?category=auto" },
+const categoryKeys = [
+  { key: "electronics", href: "/products?category=electronics" },
+  { key: "machinery", href: "/products?category=machinery" },
+  { key: "agriculture", href: "/products?category=agriculture" },
+  { key: "textiles", href: "/products?category=textiles" },
+  { key: "minerals", href: "/products?category=minerals" },
+  { key: "foodBeverages", href: "/products?category=food" },
+  { key: "construction", href: "/products?category=construction" },
+  { key: "autoParts", href: "/products?category=auto" },
 ];
-
 export const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const { t } = useTranslation();
 
   return (
     <header className="sticky top-0 z-50 bg-card border-b border-border">
@@ -30,14 +35,14 @@ export const Header = () => {
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1">
               <Globe className="w-4 h-4" />
-              Ship to:: Kenya
+              {t("header.shipTo")}:: {t("header.kenya")}
             </span>
-            <span>KES - Kenyan Shilling</span>
+            <span>{t("header.currency")}</span>
           </div>
           <div className="hidden md:flex items-center gap-4">
-            <Link to="/help" className="hover:text-primary transition-colors">Help Center</Link>
-            <Link to="/sell" className="hover:text-primary transition-colors">Become a Supplier</Link>
-            <Link to="/about" className="hover:text-primary transition-colors">About Us</Link>
+            <Link to="/help" className="hover:text-primary transition-colors">{t("common.help")}</Link>
+            <Link to="/sell" className="hover:text-primary transition-colors">{t("header.becomeSupplier")}</Link>
+            <Link to="/about" className="hover:text-primary transition-colors">{t("common.about")}</Link>
           </div>
         </div>
       </div>
@@ -56,19 +61,19 @@ export const Header = () => {
             </div>
           </Link>
 
-          {/* Search */}
+            {/* Search */}
           <div className="flex-1 max-w-2xl">
             <div className="flex">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" className="rounded-r-none border-r-0 hidden md:flex">
-                    All Categories <ChevronDown className="w-4 h-4 ml-1" />
+                    {t('header.allCategories')} <ChevronDown className="w-4 h-4 ml-1" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" className="w-48">
-                  {categories.map((cat) => (
-                    <DropdownMenuItem key={cat.name} asChild>
-                      <Link to={cat.href}>{cat.name}</Link>
+                <DropdownMenuContent align="start" className="w-48 bg-popover">
+                  {categoryKeys.map((cat) => (
+                    <DropdownMenuItem key={cat.key} asChild>
+                      <Link to={cat.href}>{t(`categories.${cat.key}`)}</Link>
                     </DropdownMenuItem>
                   ))}
                 </DropdownMenuContent>
@@ -76,7 +81,7 @@ export const Header = () => {
               <div className="relative flex-1">
                 <Input
                   type="text"
-                  placeholder="Search products, suppliers..."
+                  placeholder={t('header.searchPlaceholder')}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="rounded-none md:rounded-l-none border-r-0 h-10"
@@ -84,7 +89,7 @@ export const Header = () => {
               </div>
               <Button className="rounded-l-none" size="default">
                 <Search className="w-4 h-4" />
-                <span className="hidden sm:inline ml-2">Search</span>
+                <span className="hidden sm:inline ml-2">{t('common.search')}</span>
               </Button>
             </div>
           </div>
@@ -97,6 +102,8 @@ export const Header = () => {
                 0
               </span>
             </Button>
+
+            <SettingsDropdown />
             
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -106,13 +113,13 @@ export const Header = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
                 <DropdownMenuItem asChild>
-                  <Link to="/signin">Sign In</Link>
+                  <Link to="/signin">{t("common.signin")}</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link to="/register">Create Account</Link>
+                  <Link to="/register">{t("common.register")}</Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem>My Orders</DropdownMenuItem>
-                <DropdownMenuItem>Messages</DropdownMenuItem>
+                <DropdownMenuItem>{t("common.myOrders")}</DropdownMenuItem>
+                <DropdownMenuItem>{t("common.messages")}</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
 
@@ -127,13 +134,13 @@ export const Header = () => {
       <div className="border-t border-border bg-muted/50">
         <div className="container mx-auto px-4">
           <nav className="flex items-center gap-6 overflow-x-auto py-3 text-sm">
-            {categories.map((cat) => (
+            {categoryKeys.map((cat) => (
               <Link
-                key={cat.name}
+                key={cat.key}
                 to={cat.href}
                 className="whitespace-nowrap text-muted-foreground hover:text-primary transition-colors font-medium"
               >
-                {cat.name}
+                {t(`categories.${cat.key}`)}
               </Link>
             ))}
           </nav>

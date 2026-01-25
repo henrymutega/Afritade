@@ -1,34 +1,30 @@
 import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
-
-const footerLinks = {
-  "Get to Know Us": [
-    { name: "About Tre.David", href: "/about" },
-    { name: "Careers", href: "/about" },
-    { name: "Press Releases", href: "/about" },
-    { name: "Tre.David Cares", href: "/about" },
-  ],
-  "Sell on Tre.David": [
-    { name: "Start Selling", href: "/sell" },
-    { name: "Seller Central", href: "/sell" },
-    { name: "Supplier Membership", href: "/sell" },
-    { name: "Advertise Products", href: "/sell" },
-  ],
-  "Buy on Tre.David": [
-    { name: "How to Buy", href: "/help" },
-    { name: "Trade Assurance", href: "/help" },
-    { name: "Payment Methods", href: "/help" },
-    { name: "Shipping Info", href: "/help" },
-  ],
-  "Trade Services": [
-    { name: "Trade Assurance", href: "/help" },
-    { name: "Business Identity", href: "/help" },
-    { name: "Logistics Services", href: "/help" },
-    { name: "Letter of Credit", href: "/help" },
-  ],
-};
+import { useTranslation } from "react-i18next";
 
 export const Footer = () => {
+  const { t } = useTranslation();
+
+   const footerLinks = {
+    [t('footer.company')]: [
+      { name: t('footer.aboutUs'), href: "/about" },
+      { name: t('footer.careers'), href: "/about" },
+      { name: t('footer.press'), href: "/about" },
+      { name: t('footer.blog'), href: "/about" },
+    ],
+    [t('footer.support')]: [
+      { name: t('footer.helpCenter'), href: "/help" },
+      { name: t('footer.contactUs'), href: "/help" },
+      { name: t('footer.shipping'), href: "/help" },
+      { name: t('footer.returns'), href: "/help" },
+    ],
+    [t('footer.legal')]: [
+      { name: t('footer.terms'), href: "/help" },
+      { name: t('footer.privacy'), href: "/help" },
+      { name: t('footer.cookies'), href: "/help" },
+      { name: t('footer.compliance'), href: "/help" },
+    ],
+  };
   return (
     <footer className="bg-foreground text-background">
       {/* Main footer */}
@@ -46,7 +42,7 @@ export const Footer = () => {
               </div>
             </Link>
             <p className="text-sm text-muted-foreground mb-4">
-              Connecting manufacturers, suppliers and buyers worldwide.
+              {t('footer.description')}
             </p>
             <div className="flex gap-3">
               <a href="#" className="w-8 h-8 rounded-full bg-muted/20 flex items-center justify-center hover:bg-primary transition-colors">
