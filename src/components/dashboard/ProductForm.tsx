@@ -33,13 +33,13 @@ const productSchema = z.object({
   price: z.coerce.number().positive('Price must be positive'),
   min_order_quantity: z.coerce.number().int().positive('MOQ must be at least 1'),
   unit: z.string().min(1, 'Unit is required'),
+  sample_available: z.boolean(),
+  customization_available: z.boolean(),
+  stock_quantity: z.coerce.number().int().min(0),
   category_id: z.string().optional(),
   lead_time: z.string().optional(),
   shipping_info: z.string().optional(),
-  sample_available: z.boolean().default(false),
   sample_price: z.coerce.number().optional(),
-  customization_available: z.boolean().default(false),
-  stock_quantity: z.coerce.number().int().min(0).default(0),
 });
 
 type ProductFormData = z.infer<typeof productSchema>;
@@ -57,7 +57,7 @@ export const ProductForm = ({ onSuccess, initialData }: ProductFormProps) => {
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
   const form = useForm<ProductFormData>({
-    resolver: zodResolver(productSchema),
+    resolver: zodResolver(productSchema) as any,
     defaultValues: {
       name: initialData?.name || '',
       description: initialData?.description || '',
