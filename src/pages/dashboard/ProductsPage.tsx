@@ -29,7 +29,7 @@ interface Product {
   name: string;
   price: number;
   currency: string | null;
-  stock_quantity: number;
+  stock_quantity: number | null;
   is_active: boolean | null;
   views_count: number;
   created_at: string;
@@ -60,7 +60,12 @@ const ProductsPage = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setProducts(data || []);
+      setProducts(
+        (data || []).map((item: any) => ({
+          ...item,
+          views_count: item.views_count ?? 0,
+        }))
+      );
     } catch (error) {
       console.error('Error fetching products:', error);
     } finally {
