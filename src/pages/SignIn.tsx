@@ -1,37 +1,66 @@
-import { supabase } from "@/lib/supabase";
-import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { signInSchema, type SignInFormData } from "@/lib/validations";
+import { Loader2 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const SignIn = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const { signIn, user } = useAuth();
+  const navigate = useNavigate();
+  const { toast } = useToast();
 
-const navigate = useNavigate();
-const [loading, setLoading] = useState(false);
-
-
-const handleLogin = async (e: React.FormEvent) => {
-  e.preventDefault();
-  setLoading(true);
-
-  const email = (document.getElementById("email") as HTMLInputElement).value;
-  const password = (document.getElementById("password") as HTMLInputElement).value;
-
-  const { error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SignInFormData>({
+    resolver: zodResolver(signInSchema),
   });
 
-  if (error) {
-    alert(error.message);
-    return;
-  }
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [user, navigate]);
 
-  navigate("/");
-};
+  const onSubmit = async (data: SignInFormData) => {
+    setIsLoading(true);
+    
+    const { error } = await signIn(data.email, data.password);
+    
+    if (error) {
+      let errorMessage = "Failed to sign in. Please try again.";
+      
+      if (error.message.includes("Invalid login credentials")) {
+        errorMessage = "Invalid email or password. Please check your credentials.";
+      } else if (error.message.includes("Email not confirmed")) {
+        errorMessage = "Please verify your email address before signing in.";
+      }
+      
+      toast({
+        title: "Sign In Failed",
+        description: errorMessage,
+      });
+      setIsLoading(false);
+      return;
+    }
+    
+    toast({
+      title: "Welcome back!",
+      description: "You have successfully signed in.",
+    });
+    
+    navigate("/");
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -44,18 +73,23 @@ const handleLogin = async (e: React.FormEvent) => {
                 Welcome Back
               </h1>
               <p className="text-muted-foreground">
-                Sign in to your Tre.David account
+                Sign in to your AfriTrade account
               </p>
             </div>
 
-            <form className="space-y-4" onSubmit={handleLogin}>
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="email">Email Address</Label>
                 <Input
                   id="email"
                   type="email"
                   placeholder="you@company.com"
+                  {...register("email")}
+                  disabled={isLoading}
                 />
+                {errors.email && (
+                  <p className="text-sm text-destructive">{errors.email.message}</p>
+                )}
               </div>
 
               <div className="space-y-2">
@@ -64,7 +98,12 @@ const handleLogin = async (e: React.FormEvent) => {
                   id="password"
                   type="password"
                   placeholder="••••••••"
+                  {...register("password")}
+                  disabled={isLoading}
                 />
+                {errors.password && (
+                  <p className="text-sm text-destructive">{errors.password.message}</p>
+                )}
               </div>
 
               <div className="flex items-center justify-between text-sm">
@@ -77,8 +116,15 @@ const handleLogin = async (e: React.FormEvent) => {
                 </Link>
               </div>
 
-              <Button type="submit" className="w-full" size="lg" disabled={loading}>
-                  { loading ? "Signing In..." : "Sign In"}
+              <Button type="submit" className="w-full" size="lg" disabled={isLoading}>
+                {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Signing in...
+                  </>
+                ) : (
+                  "Sign In"
+                )}
               </Button>
             </form>
 

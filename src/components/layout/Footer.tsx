@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 export const Footer = () => {
   const { t } = useTranslation();
 
-   const footerLinks = {
+  const footerLinks = {
     [t('footer.company')]: [
       { name: t('footer.aboutUs'), href: "/about" },
       { name: t('footer.careers'), href: "/about" },
@@ -25,20 +25,21 @@ export const Footer = () => {
       { name: t('footer.compliance'), href: "/help" },
     ],
   };
+
   return (
     <footer className="bg-foreground text-background">
       {/* Main footer */}
       <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           {/* Brand column */}
-          <div className="col-span-2 md:col-span-4 lg:col-span-1">
+          <div className="col-span-2 md:col-span-1">
             <Link to="/" className="flex items-center gap-2 mb-4">
               <div className="w-10 h-10 hero-gradient rounded-lg flex items-center justify-center">
                 <span className="text-primary-foreground font-bold text-xl">D</span>
               </div>
               <div>
                 <h2 className="font-display font-bold text-xl">Tre.David</h2>
-                <p className="text-xs text-muted-foreground">B2B Marketplace</p>
+                <p className="text-xs text-muted-foreground">China's B2B Marketplace</p>
               </div>
             </Link>
             <p className="text-sm text-muted-foreground mb-4">
@@ -100,11 +101,11 @@ export const Footer = () => {
       <div className="border-t border-muted/20">
         <div className="container mx-auto px-4 py-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-            <p>© 2026 Tre.David. All rights reserved.</p>
+            <p>{t('footer.copyright')}</p>
             <div className="flex gap-4">
-              <Link to="/help" className="hover:text-primary transition-colors">Privacy Policy</Link>
-              <Link to="/help" className="hover:text-primary transition-colors">Terms of Use</Link>
-              <Link to="/help" className="hover:text-primary transition-colors">Cookie Settings</Link>
+              <Link to="/help" className="hover:text-primary transition-colors">{t('footer.privacy')}</Link>
+              <Link to="/help" className="hover:text-primary transition-colors">{t('footer.terms')}</Link>
+              <Link to="/help" className="hover:text-primary transition-colors">{t('footer.cookies')}</Link>
             </div>
           </div>
         </div>

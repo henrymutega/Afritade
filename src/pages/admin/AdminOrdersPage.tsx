@@ -103,6 +103,7 @@ const AdminOrdersPage = () => {
 
       const enrichedOrders: Order[] = (ordersData || []).map(order => ({
         ...order,
+        currency: order.currency || 'KES',
         status: order.status as OrderStatus,
         buyer: buyersMap.get(order.buyer_id),
         supplier: suppliersMap.get(order.supplier_id),
@@ -115,7 +116,6 @@ const AdminOrdersPage = () => {
       toast({
         title: 'Error',
         description: 'Failed to load orders',
-        variant: 'destructive',
       });
     } finally {
       setLoading(false);
@@ -153,7 +153,6 @@ const AdminOrdersPage = () => {
       toast({
         title: 'Error',
         description: 'Failed to update order status',
-        variant: 'destructive',
       });
     }
   };

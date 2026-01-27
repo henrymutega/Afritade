@@ -90,7 +90,6 @@ const UsersPage = () => {
       toast({
         title: 'Error',
         description: 'Failed to load users',
-        variant: 'destructive',
       });
     } finally {
       setLoading(false);
@@ -130,7 +129,6 @@ const UsersPage = () => {
       toast({
         title: 'Error',
         description: 'Failed to update verification status',
-        variant: 'destructive',
       });
     }
   };

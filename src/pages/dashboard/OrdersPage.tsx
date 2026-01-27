@@ -171,8 +171,8 @@ const OrdersPage = () => {
                     {order.currency} {order.total_amount.toLocaleString()}
                   </TableCell>
                   <TableCell>
-                    <Badge className={statusColors[order.status] || 'bg-muted'}>
-                      {order.status}
+                    <Badge className={order.status ? statusColors[order.status] : 'bg-muted'}>
+                      {order.status ?? 'Unknown'}
                     </Badge>
                   </TableCell>
                   <TableCell className="text-muted-foreground">
@@ -180,7 +180,7 @@ const OrdersPage = () => {
                   </TableCell>
                   <TableCell>
                     <Select
-                      value={order.status}
+                      value={order.status ?? ''}
                       onValueChange={(value) => updateOrderStatus(order.id, value as OrderStatus)}
                     >
                       <SelectTrigger className="w-32">

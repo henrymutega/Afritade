@@ -88,15 +88,15 @@ const ActivityLogsPage = () => {
       if (error) throw error;
 
       // Fetch user profiles for logs
-      const userIds = [...new Set(logsData?.filter((l: { user_id: any; }) => l.user_id).map((l: { user_id: any; }) => l.user_id) || [])];
+      const userIds = [...new Set(logsData?.filter(l => l.user_id).map(l => l.user_id) || [])].filter((id): id is string => id !== null);
       const { data: profilesData } = await supabase
         .from('profiles')
         .select('user_id, email, first_name, last_name')
         .in('user_id', userIds);
 
-      const profilesMap = new Map(profilesData?.map((p: { user_id: any; }) => [p.user_id, p]) || []);
+      const profilesMap = new Map(profilesData?.map(p => [p.user_id, p]) || []);
 
-      const enrichedLogs: ActivityLog[] = (logsData || []).map((log: { details: Record<string, unknown> | null; user_id: unknown; }) => ({
+      const enrichedLogs: ActivityLog[] = (logsData || []).map(log => ({
         ...log,
         details: log.details as Record<string, unknown> | null,
         user: log.user_id ? profilesMap.get(log.user_id) : undefined,

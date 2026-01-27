@@ -92,6 +92,10 @@ const AdminProductsPage = () => {
 
       const productsWithSuppliers: Product[] = (productsData || []).map(product => ({
         ...product,
+        currency: product.currency ?? '',
+        stock_quantity: product.stock_quantity ?? 0,
+        is_active: product.is_active ?? true,
+        views_count: product.views_count ?? 0,
         category: product.category as { name: string } | null,
         supplier: profilesMap.get(product.supplier_id) || null,
       }));
@@ -102,7 +106,6 @@ const AdminProductsPage = () => {
       toast({
         title: 'Error',
         description: 'Failed to load products',
-        variant: 'destructive',
       });
     } finally {
       setLoading(false);
@@ -141,7 +144,6 @@ const AdminProductsPage = () => {
       toast({
         title: 'Error',
         description: 'Failed to update product status',
-        variant: 'destructive',
       });
     }
   };
@@ -176,7 +178,6 @@ const AdminProductsPage = () => {
       toast({
         title: 'Error',
         description: 'Failed to delete product',
-        variant: 'destructive',
       });
     }
   };

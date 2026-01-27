@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
 import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -29,16 +28,15 @@ interface Product {
   id: string;
   name: string;
   price: number;
-  currency: string;
+  currency: string | null;
   stock_quantity: number;
-  is_active: boolean;
+  is_active: boolean | null;
   views_count: number;
   created_at: string;
   category?: { name: string } | null;
 }
 
 const ProductsPage = () => {
-  const navigate = useNavigate();
   const { user } = useAuth();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -182,7 +180,7 @@ const ProductsPage = () => {
                       <Button
                         variant="ghost"
                         size="icon"
-                        onClick={() => toggleProductStatus(product.id, product.is_active)}
+                        onClick={() => toggleProductStatus(product.id, product.is_active ?? false)}
                         title={product.is_active ? 'Deactivate' : 'Activate'}
                       >
                         {product.is_active ? (

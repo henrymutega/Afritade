@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 import { useTranslation } from "react-i18next";
 import { SettingsDropdown } from "./SettingsDropdown";
 
@@ -26,10 +27,12 @@ const categoryKeys = [
 
 export const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const { user, signOut } = useAuth();
   const navigate = useNavigate();
   const { t } = useTranslation();
 
   const handleSignOut = async () => {
+    await signOut();
     navigate("/");
   };
 
@@ -118,10 +121,10 @@ export const Header = () => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48 bg-popover">
-                (
+                {user ? (
                   <>
                     <DropdownMenuItem disabled className="text-muted-foreground">
-                    
+                      {user.email}
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
@@ -144,7 +147,7 @@ export const Header = () => {
                       <Link to="/register">{t('common.register')}</Link>
                     </DropdownMenuItem>
                   </>
-                )
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
 

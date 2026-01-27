@@ -92,8 +92,10 @@ const AdminDashboard = () => {
 
       const profilesMap = new Map(profilesData?.map(p => [p.user_id, p]) || []);
 
-      const ordersWithProfiles: Order[] = (ordersData || []).map(order => ({
+      const ordersWithProfiles = (ordersData || []).map(order => ({
         ...order,
+        currency: order.currency || 'KES',
+        status: order.status || 'pending',
         profiles: profilesMap.get(order.buyer_id) || undefined,
       }));
 

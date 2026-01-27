@@ -8,7 +8,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserRole } from '@/hooks/useUserRole';
 import { 
-  Package, ShoppingCart, MessageSquare, DollarSign,
+  Package, ShoppingCart, MessageSquare,
   Plus, TrendingUp, Eye
 } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';

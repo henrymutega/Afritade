@@ -100,7 +100,6 @@ const SuppliersPage = () => {
       toast({
         title: 'Error',
         description: 'Failed to load suppliers',
-        variant: 'destructive',
       });
     } finally {
       setLoading(false);
@@ -140,7 +139,6 @@ const SuppliersPage = () => {
       toast({
         title: 'Error',
         description: 'Failed to update verification status',
-        variant: 'destructive',
       });
     }
   };
