@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useTranslation } from "react-i18next";
 import { SettingsDropdown } from "./SettingsDropdown";
@@ -27,13 +27,17 @@ const categoryKeys = [
 
 export const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const { user, signOut } = useAuth();
-  const navigate = useNavigate();
+  const { user, signOut} = useAuth();
   const { t } = useTranslation();
 
+
   const handleSignOut = async () => {
-    await signOut();
-    navigate("/");
+    try {
+      await signOut();
+      window.location.href = "/signin";
+    } catch (err) {
+      console.error("Error signing out:", err);
+    }
   };
 
   return (

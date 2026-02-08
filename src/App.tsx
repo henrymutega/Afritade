@@ -3,6 +3,9 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
+import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
+import { RoleRedirect } from "@/components/auth/RoleRedirect";
+// Pages
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Categories from "./pages/Categories";
@@ -47,18 +50,34 @@ const App = () => (
             <Route path="/register" element={<Register />} />
             <Route path="/help" element={<Help />} />
             <Route path="/sell" element={<Sell />} />
-            {/* Seller Dashboard Routes */}
-            <Route path="/dashboard" element={<SellerDashboard />} />
-            <Route path="/dashboard/products" element={<ProductsPage />} />
-            <Route path="/dashboard/orders" element={<OrdersPage />} />
-            <Route path="/dashboard/inquiries" element={<InquiriesPage />} />
+
+            {/* Role Routes */}
+            <Route path="/auth-redirect" element={<RoleRedirect />} />;
+
+            {/* Seller/Manufacturer Dashboard Routes */}
+            <Route path="/dashboard" element={
+              <ProtectedRoute allowedRoles={['supplier', 'manufacturer']}>
+                <SellerDashboard />
+              </ProtectedRoute>
+            } > 
+              <Route index element={<SellerDashboard />} />
+              <Route path="products" element={<ProductsPage />} />
+              <Route path="orders" element={<OrdersPage />} />
+              <Route path="inquiries" element={<InquiriesPage />} />
+            </Route>;
+
             {/* Admin Dashboard Routes */}
-            <Route path="/admin" element={<AdminDashboard />} />
-            <Route path="/admin/users" element={<UsersPage />} />
-            <Route path="/admin/products" element={<AdminProductsPage />} />
-            <Route path="/admin/orders" element={<AdminOrdersPage />} />
-            <Route path="/admin/suppliers" element={<AdminSuppliersPage />} />
-            <Route path="/admin/activity" element={<ActivityLogsPage />} />
+            <Route path="/admin/*" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminDashboard />
+                <UsersPage />
+                <AdminProductsPage />
+                <AdminOrdersPage />
+                <AdminSuppliersPage />
+                <ActivityLogsPage />
+              </ProtectedRoute>
+            } />;
+
             {/* Not Found */}
             <Route path="*" element={<NotFound />} />
           </Routes>

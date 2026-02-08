@@ -4,7 +4,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,6 +16,7 @@ const SignIn = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { signIn, user } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
 
   const {
@@ -26,11 +27,13 @@ const SignIn = () => {
     resolver: zodResolver(signInSchema),
   });
 
+  // Check if user is already logged in and redirect to intended page
   useEffect(() => {
     if (user) {
-      navigate("/");
+      const from = (location.state as any)?.from?.pathname || "/";
+      navigate(from, { replace: true });
     }
-  }, [user, navigate]);
+  }, [user, navigate, location]);
 
   const onSubmit = async (data: SignInFormData) => {
     setIsLoading(true);
@@ -59,9 +62,8 @@ const SignIn = () => {
       description: "You have successfully signed in.",
     });
     
-    navigate("/");
+    navigate('/auth-redirect');
   };
-
   return (
     <div className="min-h-screen bg-background">
       <Header />

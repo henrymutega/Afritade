@@ -24,7 +24,7 @@ interface DashboardStats {
 const SellerDashboard = () => {
   const navigate = useNavigate();
   const { user, loading: authLoading } = useAuth();
-  const { isSeller, loading: roleLoading } = useUserRole();
+  const { loading: roleLoading } = useUserRole();
   const [stats, setStats] = useState<DashboardStats>({
     totalProducts: 0,
     totalOrders: 0,
@@ -35,22 +35,13 @@ const SellerDashboard = () => {
   const [recentOrders, setRecentOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (!authLoading && !roleLoading) {
-      if (!user) {
-        navigate('/signin');
-        return;
-      }
-      if (!isSeller) {
-        navigate('/');
-        return;
-      }
-      fetchDashboardData();
-    }
-  }, [user, authLoading, roleLoading, isSeller, navigate]);
-
   const fetchDashboardData = async () => {
-    if (!user) return;
+    if (!user) {
+      setLoading(false);
+      return;
+    }
+    
+    setLoading(true);
     
     try {
       // Fetch products count
@@ -100,6 +91,14 @@ const SellerDashboard = () => {
     }
   };
 
+  // Call fetchDashboardData when component mounts and when user changes
+  useEffect(() => {
+    if (!authLoading && !roleLoading && user) {
+      fetchDashboardData();
+    }
+  }, [user, authLoading, roleLoading]);
+
+  // Show loading skeleton while checking auth/role
   if (authLoading || roleLoading) {
     return (
       <DashboardLayout title="Dashboard">
@@ -108,6 +107,8 @@ const SellerDashboard = () => {
             <Skeleton key={i} className="h-32 rounded-xl" />
           ))}
         </div>
+        <Skeleton className="h-32 w-full rounded-xl mb-8" />
+        <Skeleton className="h-64 w-full rounded-xl" />
       </DashboardLayout>
     );
   }
