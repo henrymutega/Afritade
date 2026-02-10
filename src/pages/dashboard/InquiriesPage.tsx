@@ -99,7 +99,7 @@ const InquiriesPage = () => {
     }
   };
 
-  const unreadCount = inquiries.filter(i => !i.is_read).length;
+  const unreadCount = inquiries.filter(i => i.is_read === false).length;
 
   return (
     <DashboardLayout title="Inquiries">
@@ -162,7 +162,7 @@ const InquiriesPage = () => {
                   </div>
                   <div className="flex flex-col items-end gap-2">
                     <span className="text-xs text-muted-foreground">
-                      {format(new Date(inquiry.created_at), 'MMM d, yyyy h:mm a')}
+                      {inquiry.created_at ? format(new Date(inquiry.created_at), 'MMM d, yyyy h:mm a') : 'N/A'}
                     </span>
                     {!inquiry.is_read && (
                       <Button

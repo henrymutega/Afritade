@@ -27,8 +27,12 @@ const categoryKeys = [
 
 export const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const { user, signOut} = useAuth();
+  const { user, profile, userRole, signOut} = useAuth();
   const { t } = useTranslation();
+
+  const displayName = profile?.full_name || user?.email || "";
+
+  const canAccessDashboard = userRole === "supplier" || userRole === "manufacturer";
 
 
   const handleSignOut = async () => {
@@ -128,12 +132,14 @@ export const Header = () => {
                 {user ? (
                   <>
                     <DropdownMenuItem disabled className="text-muted-foreground">
-                      {user.email}
+                      {displayName}
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem asChild>
+                    {canAccessDashboard && (
+                      <DropdownMenuItem asChild>
                       <Link to="/dashboard">{t('common.dashboard')}</Link>
                     </DropdownMenuItem>
+                    )}
                     <DropdownMenuItem>{t('common.myOrders')}</DropdownMenuItem>
                     <DropdownMenuItem>{t('common.messages')}</DropdownMenuItem>
                     <DropdownMenuSeparator />

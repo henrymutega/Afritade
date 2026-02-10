@@ -67,7 +67,7 @@ const SellerDashboard = () => {
         .limit(5);
 
       // Calculate revenue
-      const totalRevenue = ordersData?.reduce((sum, o) => sum + Number(o.total_amount), 0) || 0;
+      const totalRevenue = ordersData?.reduce((sum, o) => sum + (Number(o.total_amount) || 0), 0) || 0;
 
       // Fetch inquiries count
       const { count: inquiriesCount } = await supabase

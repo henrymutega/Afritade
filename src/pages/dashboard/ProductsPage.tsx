@@ -173,7 +173,7 @@ const ProductsPage = () => {
                   <TableCell>
                     {product.currency} {product.price.toLocaleString()}
                   </TableCell>
-                  <TableCell>{product.stock_quantity}</TableCell>
+                  <TableCell>{product.stock_quantity ?? '-'}</TableCell>
                   <TableCell>{product.views_count}</TableCell>
                   <TableCell>
                     <Badge variant={product.is_active ? 'default' : 'secondary'}>

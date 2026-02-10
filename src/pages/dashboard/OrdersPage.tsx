@@ -71,7 +71,11 @@ const OrdersPage = () => {
     try {
       const { data: ordersData, error } = await supabase
         .from('orders')
-        .select('*')
+        .select(`
+          *,
+          profiles!orders_buyer_id_fkey(company_name, first_name, last_name, email),
+          products(name)
+        `)
         .eq('supplier_id', user.id)
         .order('created_at', { ascending: false });
 
@@ -162,13 +166,14 @@ const OrdersPage = () => {
                   <TableCell className="font-medium">{order.order_number}</TableCell>
                   <TableCell>{order.products?.name || '-'}</TableCell>
                   <TableCell>
-                    {order.profiles?.company_name || 
-                     `${order.profiles?.first_name || ''} ${order.profiles?.last_name || ''}`.trim() || 
-                     order.profiles?.email || 'Unknown'}
+                    {order.profiles?.company_name
+                     || [order.profiles?.first_name, order.profiles?.last_name].filter(Boolean).join(' ')
+                      || order.profiles?.email 
+                      || 'Unknown'}
                   </TableCell>
                   <TableCell>{order.quantity}</TableCell>
                   <TableCell>
-                    {order.currency} {order.total_amount.toLocaleString()}
+                    {order.currency ?? 'KES'} {order.total_amount.toLocaleString() ?? "0"}
                   </TableCell>
                   <TableCell>
                     <Badge className={order.status ? statusColors[order.status] : 'bg-muted'}>
@@ -176,7 +181,7 @@ const OrdersPage = () => {
                     </Badge>
                   </TableCell>
                   <TableCell className="text-muted-foreground">
-                    {format(new Date(order.created_at), 'MMM d, yyyy')}
+                    {order.created_at ? format(new Date(order.created_at), 'MMM d, yyyy h:mm a') : 'N/A'}
                   </TableCell>
                   <TableCell>
                     <Select
@@ -184,7 +189,7 @@ const OrdersPage = () => {
                       onValueChange={(value) => updateOrderStatus(order.id, value as OrderStatus)}
                     >
                       <SelectTrigger className="w-32">
-                        <SelectValue />
+                        <SelectValue placeholder="Select status"  />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="pending">Pending</SelectItem>

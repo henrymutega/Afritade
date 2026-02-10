@@ -3,17 +3,24 @@ import type { ReactNode } from 'react';
 import { type User, type Session, AuthChangeEvent } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 
-type ExtendedAuthEvent =
-  | AuthChangeEvent
-  | "TOKEN_REFRESH_FAILED";
-
+type ExtendedAuthEvent = AuthChangeEvent | "TOKEN_REFRESH_FAILED";
 
 type AccountRole = 'buyer' | 'supplier' | 'manufacturer' | 'admin';
+
+interface UserProfile {
+  user_id: string;
+  first_name: string | null;
+  last_name: string | null;
+  full_name: string | null;
+  company_name: string | null;
+}
+
 
 interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
+  profile: UserProfile | null;
   userRole: AccountRole | null;
   signUp: (email: string, password: string, metadata?: { firstName?: string; lastName?: string; companyName?: string; accountType?: string }) => Promise<{ error: Error | null }>;
   signIn: (email: string, password: string) => Promise<{ error: Error | null; userId?: string }>;
@@ -28,25 +35,25 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const [userRole, setUserRole] = useState<AccountRole | null>(null);
+  const [profile, setProfile] = useState<UserProfile | null>(null);
 
+
+  /* ----------------------------------
+     Role
+  ---------------------------------- */
   const fetchUserRole = async (userId: string) => {
-    try {
       const { data, error } = await supabase
         .from('user_roles')
         .select('role')
         .eq('user_id', userId)
-        .single();
+        .maybeSingle();
 
       if (error) {
         console.error('Error fetching user role:', error);
         setUserRole(null);
-      } else {
+        return;
+      } 
         setUserRole(data?.role as AccountRole || 'buyer');
-      }
-    } catch (error) {
-      console.error('Error fetching user role:', error);
-      setUserRole(null);
-    }
   };
 
   const refreshRole = async () => {
@@ -54,71 +61,59 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       await fetchUserRole(user.id);
     }
   };
+const fetchUserProfile = async (userId: string) => {
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('user_id', userId)
+    .maybeSingle();
 
+  if (!error) setProfile(data as unknown as UserProfile);
+};
+
+/* ----------------------------------
+     Profile + Role Upsert
+  ---------------------------------- */
   const handleProfileUpdate = async (userId: string, metadata: any) => {
-    try {
-      // Check if profile exists
-      const { data: existingProfile } = await supabase
-        .from('profiles')
-        .select('user_id')
-        .eq('user_id', userId)
-        .maybeSingle();
+
+      if (!userId) {
+        console.error('Cannot upsert profile: userId is undefined');
+        return;
+      }
 
       const profileData = {
         user_id: userId,
-        first_name: metadata.firstName || '',
-        last_name: metadata.lastName || '',
-        company_name: metadata.companyName || '',
+        first_name: metadata?.firstName ?? '',
+        last_name: metadata?.lastName ?? '',
+        full_name: `${metadata?.firstName} ${metadata?.lastName}`,
+        company_name: metadata?.companyName ?? '',
         updated_at: new Date().toISOString(),
       };
 
-      if (existingProfile) {
-        // Update existing profile
-        await supabase
-          .from('profiles')
-          .update(profileData)
-          .eq('user_id', userId);
-      } else {
-        // Insert new profile
-        await supabase
-          .from('profiles')
-          .insert(profileData as any);
+      const { error } = await supabase
+        .from('profiles')
+        .upsert(profileData as any, { onConflict: 'user_id' });
+
+      if (error) {
+        console.error('Error upserting profile:', error);
       }
 
-      // Handle user role
       if (metadata.accountType) {
-        const roleData = {
-          user_id: userId,
-          role: metadata.accountType as AccountRole,
-          updated_at: new Date().toISOString(),
-        };
-
-        // Check if role exists
-        const { data: existingRole } = await supabase
-          .from('user_roles')
-          .select('user_id')
-          .eq('user_id', userId)
-          .maybeSingle();
-
-        if (existingRole) {
-          await supabase
-            .from('user_roles')
-            .update(roleData)
-            .eq('user_id', userId);
-        } else {
-          await supabase
-            .from('user_roles')
-            .insert(roleData);
-        }
-
-        // Refresh role after update
-        await fetchUserRole(userId);
+        await supabase
+        .from('user_roles')
+        .upsert({ user_id: userId, 
+          role: metadata.accountType as AccountRole, 
+          updated_at: new Date().toISOString() } as any, 
+          { onConflict: 'user_id' }, 
+          ); 
+          
+          await fetchUserRole(userId);
       }
-    } catch (error) {
-      console.error('Error updating profile/role:', error);
-    }
   };
 
+  /* ----------------------------------
+     Auth lifecycle
+  ---------------------------------- */
 useEffect(() => {
   let subscription: { unsubscribe: () => void } | null = null;
 
@@ -131,7 +126,10 @@ useEffect(() => {
     setUser(session?.user ?? null);
 
     if (session?.user?.id) {
-      await fetchUserRole(session.user.id);
+      await Promise.all ([
+        fetchUserProfile(session.user.id), 
+        fetchUserRole(session.user.id)
+      ]);
     }
 
     setLoading(false);
@@ -143,13 +141,13 @@ useEffect(() => {
   async (event: ExtendedAuthEvent, session) => {
     console.log("AUTH EVENT:", event);
 
-    // 🚨 HANDLE SIGN OUT FIRST
+    // SIGN OUT
     if (event === "SIGNED_OUT" || event === "TOKEN_REFRESH_FAILED") {
       setUser(null);
       setSession(null);
       setUserRole(null);
-      setLoading(false);
-      return; // ⛔ stop here
+      setProfile(null);
+      return;
     }
 
     // Normal flow
@@ -157,21 +155,13 @@ useEffect(() => {
     setUser(session?.user ?? null);
 
     if (event === "SIGNED_IN" && session?.user) {
-      const metadata = session.user.user_metadata;
-      if (
-        metadata?.firstName ||
-        metadata?.lastName ||
-        metadata?.companyName ||
-        metadata?.accountType
-      ) {
-        await handleProfileUpdate(session.user.id, metadata);
-      }
-    }
-
-    if (session?.user?.id) {
-      await fetchUserRole(session.user.id);
-    } else {
-      setUserRole(null);
+      await handleProfileUpdate(
+        session.user.id, session.user.user_metadata
+      );
+      await Promise.all([
+        fetchUserProfile(session.user.id), 
+        fetchUserRole(session.user.id),
+      ]);
     }
 
     setLoading(false);
@@ -180,8 +170,7 @@ useEffect(() => {
 
   subscription = data.subscription;
 
-  return () => {
-    subscription?.unsubscribe();
+  return () => {subscription?.unsubscribe();
   };
 }, []);
 
@@ -192,14 +181,13 @@ useEffect(() => {
     password: string, 
     metadata?: { firstName?: string; lastName?: string; companyName?: string; accountType?: string }
   ) => {
-    const redirectUrl = `${window.location.origin}/`;
     
     const { error } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        emailRedirectTo: redirectUrl,
         data: metadata,
+        emailRedirectTo: window.location.origin,
       },
     });
     
@@ -211,12 +199,7 @@ useEffect(() => {
       email,
       password,
     });
-    
-    // Fetch role for the newly signed-in user
-    if (!error && data?.user?.id) {
-      await fetchUserRole(data.user.id);
-    }
-    
+        
     return { 
       error: error as Error | null,
       userId: data?.user?.id 
@@ -225,11 +208,6 @@ useEffect(() => {
 
  const signOut = async () => {
   await supabase.auth.signOut();
-
-  setUser(null);
-  setSession(null);
-  setUserRole(null);
-
 };
 
 
@@ -239,6 +217,7 @@ useEffect(() => {
       session, 
       loading, 
       userRole,
+      profile,
       signUp, 
       signIn, 
       signOut,
