@@ -164,7 +164,7 @@ const Register = () => {
                   render={({ field }) => (
                     <Select 
                       onValueChange={field.onChange} 
-                      value={field.value}
+                      value={field.value ?? ""}
                       disabled={isLoading}
                     >
                       <SelectTrigger>

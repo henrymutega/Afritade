@@ -38,8 +38,10 @@ const adminNavItems = [
 export const DashboardLayout = ({ children, title }: DashboardLayoutProps) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { signOut, user } = useAuth();
+  const { signOut, profile, user } = useAuth();
   const { isAdmin } = useUserRole();
+
+  const displayName = profile?.full_name || user?.email || "";
   
   const navItems = isAdmin ? adminNavItems : sellerNavItems;
   const basePath = isAdmin ? '/admin' : '/dashboard';
@@ -59,7 +61,7 @@ export const DashboardLayout = ({ children, title }: DashboardLayoutProps) => {
             <Link to="/" className="flex items-center gap-2">
               <ChevronLeft className="w-5 h-5 text-muted-foreground" />
               <span className="text-xl font-display font-bold text-gradient-primary">
-                AfriTrade
+                Tre.David
               </span>
             </Link>
           </div>
@@ -92,7 +94,7 @@ export const DashboardLayout = ({ children, title }: DashboardLayoutProps) => {
           <div className="p-4 border-t border-border">
             <div className="mb-3 px-4">
               <p className="text-sm font-medium text-foreground truncate">
-                {user?.email}
+                {displayName}
               </p>
               <p className="text-xs text-muted-foreground">
                 {isAdmin ? 'Administrator' : 'Seller Account'}

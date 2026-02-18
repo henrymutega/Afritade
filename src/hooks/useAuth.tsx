@@ -147,6 +147,7 @@ useEffect(() => {
       setSession(null);
       setUserRole(null);
       setProfile(null);
+      setLoading(false);
       return;
     }
 
@@ -154,13 +155,10 @@ useEffect(() => {
     setSession(session);
     setUser(session?.user ?? null);
 
-    if (event === "SIGNED_IN" && session?.user) {
-      await handleProfileUpdate(
-        session.user.id, session.user.user_metadata
-      );
-      await Promise.all([
+    if (session?.user?.id) {
+      await Promise.all ([
         fetchUserProfile(session.user.id), 
-        fetchUserRole(session.user.id),
+        fetchUserRole(session.user.id)
       ]);
     }
 
@@ -182,7 +180,7 @@ useEffect(() => {
     metadata?: { firstName?: string; lastName?: string; companyName?: string; accountType?: string }
   ) => {
     
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -190,8 +188,18 @@ useEffect(() => {
         emailRedirectTo: window.location.origin,
       },
     });
+
+    if (error) return { error}
+
+    const userId = data?.user?.id;
+
+    if(userId && metadata){
+      await handleProfileUpdate(userId, metadata);
+      await fetchUserProfile(userId);
+      await fetchUserRole(userId);
+    }
     
-    return { error: error as Error | null };
+    return { error: null };
   };
 
   const signIn = async (email: string, password: string) => {
@@ -207,7 +215,17 @@ useEffect(() => {
   };
 
  const signOut = async () => {
-  await supabase.auth.signOut();
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    console.error('Error signing out:', error);
+    return;
+  }
+
+  setUser(null);  
+  setSession(null);
+  setUserRole(null);
+  setProfile(null);
 };
 
 
