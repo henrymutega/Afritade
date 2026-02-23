@@ -11,6 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { signInSchema, type SignInFormData } from "@/lib/validations";
 import { Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from "react-i18next";
 
 const SignIn = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -18,6 +19,7 @@ const SignIn = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   const {
     register,
@@ -72,20 +74,20 @@ const SignIn = () => {
           <div className="bg-card rounded-xl border border-border p-8">
             <div className="text-center mb-8">
               <h1 className="font-display text-3xl font-bold text-foreground mb-2">
-                Welcome Back
+                {t("login.welcomeBack")}
               </h1>
               <p className="text-muted-foreground">
-                Sign in to your AfriTrade account
+                {t("login.signInToContinue")}
               </p>
             </div>
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="email">Email Address</Label>
+                <Label htmlFor="email">{t("register.email")}</Label>
                 <Input
                   id="email"
                   type="email"
-                  placeholder="you@company.com"
+                  placeholder={t("login.emailPlaceholder")}
                   {...register("email")}
                   disabled={isLoading}
                 />
@@ -95,7 +97,7 @@ const SignIn = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">{t("register.password")}</Label>
                 <Input
                   id="password"
                   type="password"
@@ -111,10 +113,10 @@ const SignIn = () => {
               <div className="flex items-center justify-between text-sm">
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input type="checkbox" className="rounded border-border" />
-                  <span className="text-muted-foreground">Remember me</span>
+                  <span className="text-muted-foreground">{t("login.rememberMe")}</span>
                 </label>
                 <Link to="/forgot-password" className="text-primary hover:underline">
-                  Forgot password?
+                  {t("login.forgotPassword")}
                 </Link>
               </div>
 
@@ -122,18 +124,18 @@ const SignIn = () => {
                 {isLoading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Signing in...
+                    {t("login.signingIn")}
                   </>
                 ) : (
-                  "Sign In"
+                  t("login.signIn")
                 )}
               </Button>
             </form>
 
             <div className="mt-6 text-center text-sm text-muted-foreground">
-              Don't have an account?{" "}
+              {t("login.noAccount")}{" "}
               <Link to="/register" className="text-primary hover:underline font-medium">
-                Create Account
+                {t("login.createAccount")}
               </Link>
             </div>
           </div>

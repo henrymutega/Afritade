@@ -1,4 +1,4 @@
-import { Search, ShoppingCart, User, Menu, ChevronDown, Globe, LogOut } from "lucide-react";
+import { Search, ShoppingCart, User, ChevronDown, Globe, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -13,6 +13,8 @@ import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useTranslation } from "react-i18next";
 import { SettingsDropdown } from "./SettingsDropdown";
+import { useUserRole } from "@/hooks/useUserRole";
+import { MobileMenu } from "./MobileMenu";
 
 const categoryKeys = [
   { key: "electronics", href: "/products?category=electronics" },
@@ -27,12 +29,13 @@ const categoryKeys = [
 
 export const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const { user, profile, userRole, signOut} = useAuth();
+  const { user, profile, signOut} = useAuth();
+  const { role: userRoleValue } = useUserRole();
   const { t } = useTranslation();
 
   const displayName = profile?.full_name || user?.email || "";
 
-  const canAccessDashboard = userRole === "supplier" || userRole === "manufacturer";
+  const canAccessDashboard = userRoleValue === "supplier" || userRoleValue === "manufacturer";
 
 
   const handleSignOut = async () => {
@@ -47,7 +50,7 @@ export const Header = () => {
   return (
     <header className="sticky top-0 z-50 bg-card border-b border-border">
       {/* Top bar */}
-      <div className="bg-foreground text-background">
+      <div className="bg-foreground text-background hidden sm:block">
         <div className="container mx-auto px-4 py-2 flex items-center justify-between text-sm">
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1">
@@ -65,25 +68,26 @@ export const Header = () => {
       </div>
 
       {/* Main header */}
-      <div className="container mx-auto px-4 py-4">
-        <div className="flex items-center gap-6">
-          {/* Logo */}
+      <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-4">
+        <div className="flex items-center gap-2 sm:gap-4 md:gap-6">
+          <MobileMenu />
+
           <Link to="/" className="flex items-center gap-2 shrink-0">
-            <div className="w-10 h-10 hero-gradient rounded-lg flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-xl">D</span>
+            <div className="w-8 h-8 sm:w-10 sm:h-10 hero-gradient rounded-lg flex items-center justify-center">
+              <span className="text-primary-foreground font-bold text-lg sm:text-xl">D</span>
             </div>
             <div className="hidden sm:block">
-              <h1 className="font-display font-bold text-xl text-foreground">Tre.David</h1>
-              <p className="text-xs text-muted-foreground">Africa's B2B Marketplace</p>
+              <h1 className="font-display font-bold text-lg md:text-xl text-foreground">Tre.David</h1>
+              <p className="text-xs text-muted-foreground hidden md:block">Africa's B2B Marketplace</p>
             </div>
           </Link>
 
           {/* Search */}
-          <div className="flex-1 max-w-2xl">
+          <div className="flex-1 max-w-2xl min-w-0">
             <div className="flex">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="rounded-r-none border-r-0 hidden md:flex">
+                  <Button variant="outline" className="rounded-r-none border-r-0 hidden lg:flex">
                     {t('header.allCategories')} <ChevronDown className="w-4 h-4 ml-1" />
                   </Button>
                 </DropdownMenuTrigger>
@@ -95,16 +99,16 @@ export const Header = () => {
                   ))}
                 </DropdownMenuContent>
               </DropdownMenu>
-              <div className="relative flex-1">
+              <div className="relative flex-1 min-w-0">
                 <Input
                   type="text"
                   placeholder={t('header.searchPlaceholder')}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="rounded-none md:rounded-l-none border-r-0 h-10"
+                  className="rounded-1-md lg:rounded-l-none border-r-0 h-9 sm:h-10 text-sm"
                 />
               </div>
-              <Button className="rounded-l-none" size="default">
+              <Button className="rounded-l-none h-9 sm:h-10 px-3 sm:px-4" size="default">
                 <Search className="w-4 h-4" />
                 <span className="hidden sm:inline ml-2">{t('common.search')}</span>
               </Button>
@@ -112,10 +116,10 @@ export const Header = () => {
           </div>
 
           {/* Actions */}
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" className="relative">
-              <ShoppingCart className="w-5 h-5" />
-              <span className="absolute -top-1 -right-1 w-5 h-5 bg-primary text-primary-foreground text-xs rounded-full flex items-center justify-center">
+          <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+            <Button variant="ghost" size="icon" className="relative h-9 w-9 sm:h-10 sm:w-10">
+              <ShoppingCart className="w-5 h-5 sm:w-5 sm:h-5" />
+              <span className="absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 bg-primary text-primary-foreground text-[10px] sm:text-xs rounded-full flex items-center justify-center">
                 0
               </span>
             </Button>
@@ -124,8 +128,8 @@ export const Header = () => {
             
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <User className="w-5 h-5" />
+                <Button variant="ghost" size="icon" className="hidden sm:flex h-9 w-9 sm:h-10 sm:w-10">
+                  <User className="w-4 h-4 sm:w-5 sm:h-5" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48 bg-popover">
@@ -160,18 +164,14 @@ export const Header = () => {
                 )}
               </DropdownMenuContent>
             </DropdownMenu>
-
-            <Button variant="ghost" size="icon" className="md:hidden">
-              <Menu className="w-5 h-5" />
-            </Button>
           </div>
         </div>
       </div>
 
       {/* Categories bar */}
-      <div className="border-t border-border bg-muted/50">
+      <div className="border-t border-border bg-muted/50 hidden md:block">
         <div className="container mx-auto px-4">
-          <nav className="flex items-center gap-6 overflow-x-auto py-3 text-sm">
+          <nav className="flex items-center gap-4 lg:gap-6 overflow-x-auto py-3 text-sm scrollbar-hidden">
             {categoryKeys.map((cat) => (
               <Link
                 key={cat.key}

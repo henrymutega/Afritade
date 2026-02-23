@@ -1,5 +1,5 @@
 import { type ReactNode } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, Navigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { 
   LayoutDashboard, Package, ShoppingCart, MessageSquare, 
@@ -38,13 +38,22 @@ const adminNavItems = [
 export const DashboardLayout = ({ children, title }: DashboardLayoutProps) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { signOut, profile, user } = useAuth();
+  const { signOut, profile, user, loading, profileLoading } = useAuth();
   const { isAdmin } = useUserRole();
 
   const displayName = profile?.full_name || user?.email || "";
   
   const navItems = isAdmin ? adminNavItems : sellerNavItems;
   const basePath = isAdmin ? '/admin' : '/dashboard';
+  
+ if(loading || profileLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!user) {
+    return <Navigate to="/signin" replace />;
+  }
+ 
 
   const handleSignOut = async () => {
     await signOut();

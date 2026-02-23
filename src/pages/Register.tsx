@@ -18,12 +18,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema, type RegisterFormData } from "@/lib/validations";
 import { Loader2, Check, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from "react-i18next";
 
 const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { signUp, user } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   const {
     register,
@@ -94,20 +96,20 @@ const Register = () => {
           <div className="bg-card rounded-xl border border-border p-8">
             <div className="text-center mb-8">
               <h1 className="font-display text-3xl font-bold text-foreground mb-2">
-                Create Account
+                {t("register.createAccount")}
               </h1>
               <p className="text-muted-foreground">
-                Join China's largest B2B marketplace
+                {t("register.joinTreDavid")}
               </p>
             </div>
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="firstName">First Name</Label>
+                  <Label htmlFor="firstName">{t("register.firstName")}</Label>
                   <Input 
                     id="firstName" 
-                    placeholder="John" 
+                    placeholder={t("register.firstNamePlaceholder")} 
                     {...register("firstName")}
                     disabled={isLoading}
                   />
@@ -116,10 +118,10 @@ const Register = () => {
                   )}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="lastName">Last Name</Label>
+                  <Label htmlFor="lastName">{t("register.lastName")}</Label>
                   <Input 
                     id="lastName" 
-                    placeholder="Doe" 
+                    placeholder={t("register.lastNamePlaceholder")}
                     {...register("lastName")}
                     disabled={isLoading}
                   />
@@ -130,11 +132,11 @@ const Register = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="email">Email Address</Label>
+                <Label htmlFor="email">{t("register.email")}</Label>
                 <Input
                   id="email"
                   type="email"
-                  placeholder="you@company.com"
+                  placeholder={t("register.emailPlaceholder")}
                   {...register("email")}
                   disabled={isLoading}
                 />
@@ -144,10 +146,10 @@ const Register = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="companyName">Company Name</Label>
+              <Label htmlFor="companyName">{t("register.companyName")}</Label>
                 <Input 
                   id="companyName" 
-                  placeholder="Your Company Ltd" 
+                  placeholder={t("register.companyNamePlaceholder")}
                   {...register("companyName")}
                   disabled={isLoading}
                 />
@@ -157,7 +159,7 @@ const Register = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="accountType">Account Type</Label>
+                <Label htmlFor="accountType">{t("register.accountType")}</Label>
                 <Controller
                   name="accountType"
                   control={control}
@@ -168,12 +170,12 @@ const Register = () => {
                       disabled={isLoading}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Select account type" />
+                        <SelectValue placeholder={t("register.accountTypeDesc")} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="buyer">Buyer - Purchase products</SelectItem>
-                        <SelectItem value="supplier">Supplier - Sell products</SelectItem>
-                        <SelectItem value="manufacturer">Manufacturer - Produce & sell</SelectItem>
+                        <SelectItem value="buyer">{t("register.buyer")}</SelectItem>
+                        <SelectItem value="supplier">{t("register.supplier")}</SelectItem>
+                        <SelectItem value="manufacturer">{t("register.manufacturer")}</SelectItem>
                       </SelectContent>
                     </Select>
                   )}
@@ -184,7 +186,7 @@ const Register = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">{t("register.password")}</Label>
                 <Input
                   id="password"
                   type="password"
@@ -214,7 +216,7 @@ const Register = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="confirmPassword">Confirm Password</Label>
+                <Label htmlFor="confirmPassword">{t("register.confirmPassword")}</Label>
                 <Input
                   id="confirmPassword"
                   type="password"
@@ -228,13 +230,13 @@ const Register = () => {
               </div>
 
               <div className="text-sm text-muted-foreground">
-                By creating an account, you agree to our{" "}
+                {t("register.terms1")}{" "}
                 <Link to="/terms" className="text-primary hover:underline">
-                  Terms of Use
+                  {t("register.terms2")}
                 </Link>{" "}
-                and{" "}
+                {t("register.terms3")}{" "}
                 <Link to="/privacy" className="text-primary hover:underline">
-                  Privacy Policy
+                  {t("register.terms4")}
                 </Link>
               </div>
 
@@ -242,18 +244,18 @@ const Register = () => {
                 {isLoading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Creating account...
+                    {t("register.creatingAcc")}
                   </>
                 ) : (
-                  "Create Account"
+                  t("register.createAccBtn")
                 )}
               </Button>
             </form>
 
             <div className="mt-6 text-center text-sm text-muted-foreground">
-              Already have an account?{" "}
+              {t("register.alreadyHaveAccount")}{" "}
               <Link to="/signin" className="text-primary hover:underline font-medium">
-                Sign In
+                {t("register.signInNow")}
               </Link>
             </div>
           </div>

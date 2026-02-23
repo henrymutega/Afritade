@@ -25,7 +25,10 @@
     "view": "View",
     "close": "Close",
     "confirm": "Confirm",
-    "back": "Back"
+    "back": "Back",
+    "home": "Home",
+    "products": "Products",
+    "suppliers": "Suppliers"
   },
   "header": {
     "shipTo": "Ship to",
@@ -88,6 +91,46 @@
     "seller": "Seller Account",
     "sellerDesc": "Reach buyers across Africa and beyond",
     "createFree": "Create Free Account"
+  },
+  "login": {
+    "welcomeBack": "Welcome Back",
+    "signInToContinue": "Sign in to Tre.David account",
+    "email": "Email Address",
+    "emailPlaceholder": "you@company.com",
+    "password": "Password",
+    "rememberMe": "Remember Me",
+    "forgotPassword": "Forgot Password?",
+    "signIn": "Sign In",
+    "signingIn": "Signing in...",
+    "noAccount": "Don't have an account?",
+    "createAccount": "Create Account"
+  },
+  "register": {
+    "createAccount": "Create Your Account",
+    "joinTreDavid": "Join Tre.David and start trading with verified suppliers across Africa",
+    "firstName": "First Name",
+    "firstNamePlaceholder": "John",
+    "lastName": "Last Name",
+    "lastNamePlaceholder": "Doe",
+    "email": "Email Address",
+    "emailNamePlaceholder": "you@company.com",
+    "companyName": "Company Name",
+    "companyNamePlaceholder": "Your Company Ltd",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "accountType": "Account Type",
+    "accountTypeDesc": "Select your account type",
+    "buyer": "Buyer - Purchase products",
+    "supplier": "Supplier - Sell products",
+    "manufacturer": "Manufacturer - Produce & sell products",
+    "alreadyHaveAccount": "Already have an account?",
+    "signInNow": "Sign In Now",
+    "createAccBtn": "Create Account",
+    "creatingAcc": "Creating your account...",
+    "terms1": "By creating an account, you agree to our",
+    "terms2": "Terms of use",
+    "terms3": "and",
+    "terms4": "Privacy Policy"
   },
   "dashboard": {
     "overview": "Overview",
