@@ -1,9 +1,7 @@
 import { useState, useEffect, createContext, useContext } from 'react';
 import type { ReactNode } from 'react';
-import { type User, type Session, AuthChangeEvent } from '@supabase/supabase-js';
+import { type User, type Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
-
-type ExtendedAuthEvent = AuthChangeEvent | "TOKEN_REFRESH_FAILED";
 
 interface UserProfile {
   user_id: string;
