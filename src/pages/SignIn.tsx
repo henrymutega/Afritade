@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signInSchema, type SignInFormData } from "@/lib/validations";
 import { Loader2 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 
 const SignIn = () => {
@@ -18,7 +18,6 @@ const SignIn = () => {
   const { signIn, user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const { toast } = useToast();
   const { t } = useTranslation();
 
   const {
@@ -29,7 +28,6 @@ const SignIn = () => {
     resolver: zodResolver(signInSchema),
   });
 
-  // Check if user is already logged in and redirect to intended page
   useEffect(() => {
     if (user) {
       const from = (location.state as any)?.from?.pathname || "/";
@@ -40,7 +38,7 @@ const SignIn = () => {
   const onSubmit = async (data: SignInFormData) => {
     setIsLoading(true);
     
-    const { error } = await signIn(data.email, data.password);
+    const { error }= await signIn(data.email, data.password);
     
     if (error) {
       let errorMessage = "Failed to sign in. Please try again.";
@@ -49,23 +47,27 @@ const SignIn = () => {
         errorMessage = "Invalid email or password. Please check your credentials.";
       } else if (error.message.includes("Email not confirmed")) {
         errorMessage = "Please verify your email address before signing in.";
+      } else if (error.message.includes("rate limit")) {
+        errorMessage = "Too many failed attempts. Please wait a moment and try again.";
       }
       
-      toast({
-        title: "Sign In Failed",
-        description: errorMessage,
+      toast.error(errorMessage, {
+        description: "Sign In Failed",
+        duration: 5000,
       });
       setIsLoading(false);
       return;
     }
     
-    toast({
-      title: "Welcome back!",
-      description: "You have successfully signed in.",
+    toast.success("Welcome back!", {
+      description: "You have successfully signed into your Tre.David account.",
+      duration: 5000,
     });
-    
+    setTimeout(() => {
     navigate('/auth-redirect');
+    }, 1000);
   };
+
   return (
     <div className="min-h-screen bg-background">
       <Header />

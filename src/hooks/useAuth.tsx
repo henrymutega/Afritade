@@ -3,12 +3,15 @@ import type { ReactNode } from 'react';
 import { type User, type Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 
+
 interface UserProfile {
   user_id: string;
   first_name: string | null;
   last_name: string | null;
+  email: string | null;
   full_name: string | null;
   company_name: string | null;
+  role: 'buyer' | 'supplier' | 'manufacturer' | 'admin' | null;
 }
 
 interface AuthContextType {
@@ -26,12 +29,13 @@ interface AuthContextType {
       companyName?: string;
       accountType?: string;
     }
-  ) => Promise<{ error: Error | null }>;
+  ) => Promise<{ error: Error | null; data?: any }>;
   signIn: (
     email: string,
     password: string
-  ) => Promise<{ error: Error | null; userId?: string }>;
+  ) => Promise<{ error: Error | null; userId?: string; data?: any }>;
   signOut: () => Promise<void>;
+  refreshProfile: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -46,7 +50,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   /* ----------------------------------
      Fetch Profile
   ---------------------------------- */
-  const fetchUserProfile = async (userId: string) => {
+  const fetchUserProfile = async (userId: string, authUser?: User) => {
     setProfileLoading(true);
 
     const { data, error } = await supabase
@@ -55,11 +59,26 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       .eq('user_id', userId)
       .maybeSingle();
 
-    if (!error) {
+    if (!error && data) {
       setProfile(data as unknown as UserProfile);
     } else {
-      console.error('Error fetching profile:', error);
-      setProfile(null);
+      if (authUser?.user_metadata && Object.keys(authUser.user_metadata).length > 0) {
+        await handleProfileUpdate(userId, authUser.user_metadata);
+
+        const { data: newProfile } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('user_id', userId)
+          .maybeSingle();
+
+        setProfile(newProfile as unknown as UserProfile);
+      } else {
+        setProfile(null);
+      }
+
+      if (error && error.code !== 'PGRST116') {
+        console.error('Error fetching profile:', error);
+      }
     }
 
     setProfileLoading(false);
@@ -71,21 +90,37 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const handleProfileUpdate = async (userId: string, metadata: any) => {
     if (!userId) return;
 
+    const firstName = metadata?.firstName ?? '';
+    const lastName = metadata?.lastName ?? '';
+    const accountType = metadata?.accountType ?? 'buyer';
+
     const profileData = {
       user_id: userId,
-      first_name: metadata?.firstName ?? '',
-      last_name: metadata?.lastName ?? '',
-      full_name: `${metadata?.firstName ?? ''} ${metadata?.lastName ?? ''}`.trim(),
+      first_name: firstName,
+      last_name: lastName,
+      email: metadata?.email ?? '',
+      full_name: `${firstName} ${lastName}`.trim(),
       company_name: metadata?.companyName ?? '',
+      role: accountType,
       updated_at: new Date().toISOString(),
     };
 
     const { error } = await supabase
       .from('profiles')
-      .upsert(profileData as any, { onConflict: 'user_id' });
+      .upsert(profileData, { onConflict: 'user_id' });
 
     if (error) {
       console.error('Error upserting profile:', error);
+      throw error;
+    }
+  };
+
+/*-------------------------------
+  Refresh Profile
+-------------------------------*/
+  const refreshProfile = async () => {
+    if (user?.id) {
+      await fetchUserProfile(user.id, user);
     }
   };
 
@@ -105,7 +140,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         if (session) {
           setSession(session);
           setUser(session.user);
-          await fetchUserProfile(session.user.id);
+          await fetchUserProfile(session.user.id, session.user);
         } else {
           setSession(null);
           setUser(null);
@@ -134,14 +169,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             setSession(session);
             setUser(session?.user ?? null);
             if (session?.user?.id) {
-              await fetchUserProfile(session.user.id);
+              setTimeout(async () => {
+              await fetchUserProfile(session.user.id, session.user);
+              }, 500);
             }
+            setLoading(false);
             break;
             
           case 'SIGNED_OUT':
             setSession(null);
             setUser(null);
             setProfile(null);
+            setLoading(false);
             break;
             
           case 'TOKEN_REFRESHED':
@@ -151,6 +190,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             if (session?.user?.id) {
               await fetchUserProfile(session.user.id);
             }
+            setLoading(false);
             break;
         }
       }
@@ -179,6 +219,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       accountType?: string;
     }
   ) => {
+    try {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -187,42 +228,45 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         emailRedirectTo: window.location.origin,
       },
     });
-
-    if (!error && data.user?.id) {
-      await handleProfileUpdate(data.user.id, metadata);
-      
-      // If account type is provided, set the role
-      if (metadata?.accountType) {
-        const { error: roleError } = await supabase
-          .from('user_roles')
-          .upsert({
-            user_id: data.user.id,
-            role: metadata.accountType,
-            updated_at: new Date().toISOString()
-          } as any, { onConflict: 'user_id' });
-          
-        if (roleError) {
-          console.error('Error setting role:', roleError);
-        }
-      }
+    if (error) {
+      return { error: error as Error, data: null };    
     }
 
-    return { error: error as Error | null };
-  };
+    if (data.user?.id && metadata) {
+      await handleProfileUpdate(data.user.id, metadata);
 
+      await fetchUserProfile(data.user.id, data.user);
+    }
+
+    return { error: null, data };
+    } catch (error) {
+      console.error('Sign up error:', error);
+      return { error: error as Error | null };
+    }
+  };
   /* ----------------------------------
      Sign In
   ---------------------------------- */
   const signIn = async (email: string, password: string) => {
+    try {
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
+    if (error) {
+      return { error: error as Error };
+    }
+
     return {
       error: error as Error | null,
       userId: data?.user?.id,
+      data,
     };
+    } catch (error) {
+      console.error('Sign in error:', error);
+      return { error: error as Error, data: null };
+    }
   };
 
   /* ----------------------------------
@@ -258,6 +302,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         signUp,
         signIn,
         signOut,
+        refreshProfile,
       }}
     >
       {children}

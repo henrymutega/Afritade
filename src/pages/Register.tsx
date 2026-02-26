@@ -17,14 +17,13 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema, type RegisterFormData } from "@/lib/validations";
 import { Loader2, Check, X } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 
 const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { signUp, user } = useAuth();
   const navigate = useNavigate();
-  const { toast } = useToast();
   const { t } = useTranslation();
 
   const {
@@ -72,20 +71,22 @@ const Register = () => {
         errorMessage = error.message;
       }
       
-      toast({
-        title: "Registration Failed",
-        description: errorMessage,
+      toast.error(errorMessage, {
+        description: "Registration Failed",
+        duration: 5000,
       });
       setIsLoading(false);
       return;
     }
     
-    toast({
-      title: "Account created!",
+    toast.success("Account created!", {
       description: "Welcome to Tre.David. You are now signed in.",
+      duration: 5000,
     });
-    
-    navigate("/");
+
+    setTimeout(() => {
+      navigate("/");
+    }, 1000);
   };
 
   return (

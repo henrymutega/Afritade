@@ -8,7 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useTranslation } from "react-i18next";
@@ -29,22 +29,30 @@ const categoryKeys = [
 
 export const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const { user, profile, signOut} = useAuth();
+  const { user, profile, signOut, refreshProfile} = useAuth();
   const { role: userRoleValue } = useUserRole();
   const { t } = useTranslation();
 
-  const displayName = profile?.full_name || user?.email || "";
+  useEffect(() => {
+    if (user && !profile) {
+      refreshProfile();
+    }
+  }, [user, profile, refreshProfile]);
+
+  const displayName = (() => {
+    if (profile?.full_name) {
+      return profile.full_name;
+    }
+    
+    return "User";
+  })();
 
   const canAccessDashboard = userRoleValue === "supplier" || userRoleValue === "manufacturer";
 
 
   const handleSignOut = async () => {
-    try {
       await signOut();
       window.location.href = "/signin";
-    } catch (err) {
-      console.error("Error signing out:", err);
-    }
   };
 
   return (
