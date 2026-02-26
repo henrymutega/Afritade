@@ -25,7 +25,7 @@ import {
 } from '@/components/ui/select';
 import { Search, Eye } from 'lucide-react';
 import { format } from 'date-fns';
-import { toast } from '@/hooks/use-toast';
+import { toast } from "sonner";
 
 type OrderStatus = 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
 
@@ -113,9 +113,9 @@ const AdminOrdersPage = () => {
       setOrders(enrichedOrders);
     } catch (error) {
       console.error('Error fetching orders:', error);
-      toast({
-        title: 'Error',
+      toast.error('Failed to load orders', {
         description: 'Failed to load orders',
+        duration: 5000,
       });
     } finally {
       setLoading(false);
@@ -144,15 +144,15 @@ const AdminOrdersPage = () => {
         details: { new_status: newStatus },
       });
 
-      toast({
-        title: 'Success',
+      toast.success('Order status updated successfully', {
         description: `Order status updated to ${newStatus}`,
+        duration: 5000,
       });
     } catch (error) {
       console.error('Error updating order:', error);
-      toast({
-        title: 'Error',
+      toast.error('Failed to update order status', {
         description: 'Failed to update order status',
+        duration: 5000,
       });
     }
   };

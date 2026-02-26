@@ -18,7 +18,7 @@ import {
 } from '@/components/ui/table';
 import { Search, UserCheck, UserX, ExternalLink, Package } from 'lucide-react';
 import { format } from 'date-fns';
-import { toast } from '@/hooks/use-toast';
+import { toast } from "sonner";
 
 interface Supplier {
   id: string;
@@ -97,9 +97,9 @@ const SuppliersPage = () => {
       setSuppliers(suppliersWithData);
     } catch (error) {
       console.error('Error fetching suppliers:', error);
-      toast({
-        title: 'Error',
+      toast.error('Failed to load suppliers', {
         description: 'Failed to load suppliers',
+        duration: 5000,
       });
     } finally {
       setLoading(false);
@@ -130,15 +130,14 @@ const SuppliersPage = () => {
         details: { new_status: status },
       });
 
-      toast({
-        title: 'Success',
-        description: `Supplier ${status === 'verified' ? 'verified' : 'rejected'} successfully`,
+      toast.success(`Supplier ${status === 'verified' ? 'verified' : 'rejected'} successfully`, {
+        duration: 5000,
       });
     } catch (error) {
       console.error('Error updating verification:', error);
-      toast({
-        title: 'Error',
+      toast.error('Failed to update verification status', {
         description: 'Failed to update verification status',
+        duration: 5000,
       });
     }
   };

@@ -25,7 +25,7 @@ import {
 } from '@/components/ui/select';
 import { Search, Eye, EyeOff, Trash2, ExternalLink } from 'lucide-react';
 import { format } from 'date-fns';
-import { toast } from '@/hooks/use-toast';
+import { toast } from "sonner";
 
 interface Product {
   id: string;
@@ -103,9 +103,9 @@ const AdminProductsPage = () => {
       setProducts(productsWithSuppliers);
     } catch (error) {
       console.error('Error fetching products:', error);
-      toast({
-        title: 'Error',
+      toast.error('Failed to load products', {
         description: 'Failed to load products',
+        duration: 5000,
       });
     } finally {
       setLoading(false);
@@ -135,15 +135,15 @@ const AdminProductsPage = () => {
         entity_id: productId,
       });
 
-      toast({
-        title: 'Success',
+      toast.success('Product status updated successfully', {
         description: `Product ${currentStatus ? 'deactivated' : 'activated'} successfully`,
+        duration: 5000,
       });
     } catch (error) {
       console.error('Error toggling product:', error);
-      toast({
-        title: 'Error',
+      toast.error('Failed to update product status', {
         description: 'Failed to update product status',
+        duration: 5000,
       });
     }
   };
@@ -169,15 +169,15 @@ const AdminProductsPage = () => {
         entity_id: productId,
       });
 
-      toast({
-        title: 'Success',
+      toast.success('Product deleted successfully', {
         description: 'Product deleted successfully',
+        duration: 5000,
       });
     } catch (error) {
       console.error('Error deleting product:', error);
-      toast({
-        title: 'Error',
+      toast.error('Failed to delete product', {
         description: 'Failed to delete product',
+        duration: 5000,
       });
     }
   };

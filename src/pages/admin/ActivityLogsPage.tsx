@@ -24,7 +24,7 @@ import {
 } from '@/components/ui/select';
 import { Search, User, Package, ShoppingCart, FileText, Settings } from 'lucide-react';
 import { format } from 'date-fns';
-import { toast } from '@/hooks/use-toast';
+import { toast } from 'sonner';
 
 interface ActivityLog {
   id: string;
@@ -105,9 +105,9 @@ const ActivityLogsPage = () => {
       setLogs(enrichedLogs);
     } catch (error) {
       console.error('Error fetching logs:', error);
-      toast({
-        title: 'Error',
+      toast.error('Failed to load activity logs', {
         description: 'Failed to load activity logs',
+        duration: 5000,
       });
     } finally {
       setLoading(false);

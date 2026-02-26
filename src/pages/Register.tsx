@@ -137,7 +137,7 @@ const Register = () => {
                 <Input
                   id="email"
                   type="email"
-                  placeholder={t("register.emailPlaceholder")}
+                  placeholder={t("register.emailNamePlaceholder")}
                   {...register("email")}
                   disabled={isLoading}
                 />

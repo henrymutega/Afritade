@@ -25,7 +25,7 @@ import {
 } from '@/components/ui/select';
 import { Search, UserCheck, UserX, Mail } from 'lucide-react';
 import { format } from 'date-fns';
-import { toast } from '@/hooks/use-toast';
+import { toast } from 'sonner';
 
 interface User {
   id: string;
@@ -87,9 +87,9 @@ const UsersPage = () => {
       setUsers(usersWithRoles);
     } catch (error) {
       console.error('Error fetching users:', error);
-      toast({
-        title: 'Error',
+      toast.error( 'Failed to load users', {
         description: 'Failed to load users',
+        duration: 5000,
       });
     } finally {
       setLoading(false);
@@ -120,16 +120,16 @@ const UsersPage = () => {
         details: { new_status: status },
       });
 
-      toast({
-        title: 'Success',
+      toast.success(`User verification status updated to ${status}`, {
         description: `User verification status updated to ${status}`,
+        duration: 5000,
       });
     } catch (error) {
       console.error('Error updating verification:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to update verification status',
-      });
+      toast.error('Failed to update verification status', 
+        {description: 'Failed to update verification status', 
+          duration: 5000
+        });
     }
   };
 
